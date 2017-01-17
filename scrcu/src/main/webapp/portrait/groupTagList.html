@@ -1,0 +1,57 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a><i class="fa fa-home"></i> 用户画像</a></li>
+		<li>标签墙</li>
+	</ul>
+</div>
+<section id="content">
+	<section class="vbox">
+		<section class="scrollable wrapper">
+			<form action="${root}/portrait/groupTags" method="post">
+				<input type="hidden" name="code" id="code">
+				<table id="table" class="table table-striped" style="border: 1px solid #ddd;">
+					<thead>
+						<tr>
+							<th class="fontbold">所选标签</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						<#if groupList??>
+							<#list groupList as group>
+								<tr>
+							<td class="col-sm-10" id="${group_index}">
+								<#if group??>
+									<#list group as tagMap>
+										<#if tagMap??> 
+												<ul class="groupTagList userTags" >
+													<li name="${tagMap.get('label_only')}"><b>${tagMap.get('label_desc')}</b></li>
+												</ul>
+										</#if>
+									</#list>
+								</#if>
+								</td>
+							<td>
+								<input type="submit" onclick="search(${group_index})" class="btn btn-s-md btn-default" value="检索"/>
+							</td>
+						</tr>
+						</#list>
+						</#if>
+					</tbody>
+				</table>
+			</form>
+		</section>
+	</section>
+</section>
+</@layout>
+<script>
+	function search(name) {
+		var code = "";
+		$("#"+name+" li").each(function() {
+			code = code + $(this).attr("name") + ",";
+		});
+		$("#code").val(code);
+	}
+</script>

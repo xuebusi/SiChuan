@@ -1,0 +1,85 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>网站统计</li>
+		<li>广告趋势</li>
+	</ul>
+</div>
+<section id="content">
+<#include "/common/_dateQuery.html"/>
+	<section class="panel panel-default">
+		<header class="panel-heading">
+			<i class="icon-bar-chart padder-xs"></i>广告趋势 <i class="fa fa-info-sign text-muted" data-toggle="tooltip"
+				data-placement="bottom" data-title="ajax to load the data."
+			></i>
+			<span class="hidden-sm pull-right"><a href="" csvAction="/csv/portal_siteAnalysis_adTrend_query" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"
+				></i>&nbsp;导出</a></span>
+		</header>
+		<div class="table-responsive">
+			<table id="table" class="datatables table table-striped m-b-none" data-ride="datatables">
+				<thead>
+					<tr>
+						<th class="w-4">广告名称</th>
+						<th class="w-4">投放网址</th>
+						<th class="w-3">展现量</th>
+						<th class="w-3">点击量</th>
+						<th class="w-4">唯一点击量</th>
+						<th class="w-2">点击率</th>
+						<th class="w-4">唯一点击率</th>
+						<th class="w-3">到达量</th>
+						<th class="w-3">到达率</th>
+						<th class="w-2">二跳率</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	<div class="clear"></div>
+</section>
+</@layout>
+<script>
+function query(flag) {
+	if (flag) {
+		$("#yesterdayButton").click();
+		return;
+	}
+	var start = $("#start_dt").val();
+	var end = $("#end_dt").val();
+	var ajaxOption = {
+		url : window.location.href + "?start_dt=" + start + "&end_dt="
+				+ end,
+		success : function(data) {
+			var option = {
+				"fixedOrder":true,
+				"aaData" : data.data,
+				"aoColumnDefs": [{
+                     "targets": [6], // 目标列位置，下标从0开始
+                     "render": function(data) { // 返回自定义内容
+                  	  return getPercent(data);
+                    }},{
+                     "targets": [7], // 目标列位置，下标从0开始
+                     "render": function(data) { // 返回自定义内容
+                  	  return getPercent(data);
+                    }},{
+                       "targets": [9], // 目标列位置，下标从0开始
+                       "render": function(data) { // 返回自定义内容
+                        return getPercent(data);
+                     }},{
+                         "targets": [10], // 目标列位置，下标从0开始
+                         "render": function(data) { // 返回自定义内容
+                       	 return getPercent(data);
+                     }},
+                     { "bSortable": false, "aTargets": [ 0 ] }
+                    
+               ]
+			};
+			tableQuery(option);
+		}
+	};
+	commonAjax(ajaxOption);
+}
+</script>

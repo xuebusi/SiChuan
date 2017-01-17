@@ -1,0 +1,61 @@
+<div class="btn-group m-r" id="customColumnDiv">
+	<button data-toggle="dropdown" class="btn noshadow btn-default dropdown-toggle" style=" background: #f2f2f2 !important;padding:10px 10px;border-bottom:0px;font-size:12px;">
+		<span class="dropdown-label" data-placeholder="Please select">自定义字段</span> <span class="caret"></span>
+	</button>
+	<div class="dropdown-menu dropdown-select customColumn-menu" style="margin-bottom: 50px">
+		<div class="col-sm-12" style="padding: 0px 16px;">
+			<div class="customColumn"></div>
+			<div class="clear">
+				<div class="line line-dashed b-b pull-in" style="padding-top: 0px"></div>
+			</div>
+			<label class="checkbox-inline toggle-vis " data-column="2">
+				<input type="checkbox" name="check_all">
+				全选
+			</label>
+			<label class="checkbox-inline toggle-vis" data-column="2">
+				<input type="checkbox" name="check_none">
+				反选
+			</label>
+			<div class="inline" style="padding-left: 40px">
+				<button type="submit" id="confimCustomColumn" class="btn btn-sm btn-primary">确定</button>
+				<button type="submit" id="cancelCustomColumn" class="btn btn-sm btn-default">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+						$(document).off('click.bs.dropdown.data-api');
+						$('[data-toggle=dropdown]').click(function() {
+							$("#customColumnDiv").addClass('open');
+						});
+						$("#cancelCustomColumn").click(function() {
+							$("#customColumnDiv").removeClass('open');
+						});
+						$("[name='check_all'],[name='check_none']").change(
+								function() {
+									$('[name="checkbox"],[name="check_all"]')
+											.prop("checked", this.checked);
+								});
+
+						$(".table_select_row thead tr th")
+								.each(
+										function(index) {
+											var checked = "checked";
+											if ($(this).attr("show") == "false") {
+												checked = "";
+											}
+											var checkbox = '<label class="checkbox toggle-vis" style="width:50%;display:inline-block"><input name="checkbox" '
+													+ checked
+													+ ' data-column="'
+													+ (index + 1)
+													+ '" type="checkbox">'
+													+ $(this).text()
+													+ '</label>';
+											$(".customColumn").append(checkbox);
+										});
+					});
+</script>

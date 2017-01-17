@@ -1,0 +1,66 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>用户统计</li>
+		<li>用户等级</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div id="chartDiv" style="height: 200px"></div>
+	<div class="clear"><hr/></div>
+
+	<div class="panel panel-default">
+		<header class="panel-heading">
+			<i class="icon-bar-chart padder-xs"></i>用户认证等级 <span class="hidden-sm pull-right"><a href=""
+				csvAction="/csv/portal_userAnalysis_userLevel" class="csvExport btn btn-default btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<table id="table" class="table table-striped b-light">
+			<thead>
+				<tr>
+					<th>用户等级</th>
+					<th>数量</th>
+					<th>占比</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('chartDiv'),
+						'infographic');
+				var chartOption = data.chartOption;
+				chart.setOption($.parseJSON(chartOption));
+				var option = {
+					"aaData" : data.data,
+					bPaginate : false,
+					bInfo : false,
+					bFilter : false,
+					bLengthChange : false,
+					"aoColumnDefs": [{
+	                    "targets": [3], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              }]
+				};
+				tableQuery(option);
+			}
+		};
+		commonAjax(ajaxOption);
+	}
+</script>

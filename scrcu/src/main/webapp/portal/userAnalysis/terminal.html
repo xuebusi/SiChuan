@@ -1,0 +1,142 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>终端详情</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div id="chartDiv" style="height: 220px"></div>
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="portal_terminal_os"><a href="#os_tab" data-toggle="tab"><i
+						class="icon-calendar"
+					></i>&nbsp;操作系统</a></li>
+				<li class="csvExportTab" csvAction="portal_terminal_browserDiv"><a href="#tab" data-toggle="tab"><i
+						class="icon-screen-smartphone"
+					></i>&nbsp;浏览器</a></li>
+			</ul>
+			<span class="hidden-sm pull-right"><a href="" id="csvExport" csvAction="/csv/portal_terminal_os"
+				class=" btn btn-default btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="os_tab">
+					<table id="os_table" class="datatables table table-striped " data-ride="datatables">
+						<thead>
+							<tr>
+								<th class="aglin-center">操作系统</th>
+								<th class="aglin-center">访问次数VV</th>
+								<th class="aglin-center">浏览量</th>
+								<th class="aglin-center">浏览量占比</th>
+								<th class="aglin-center">访客数UV</th>
+								<th class="aglin-center">UV占比</th>
+								<th class="aglin-center">IP数</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="tab">
+					<table id="table" class="datatables table table-striped " data-ride="datatables">
+						<thead>
+							<tr>
+								<th class="aglin-center">浏览器</th>
+								<th class="aglin-center">访问次数VV</th>
+								<th class="aglin-center">浏览量</th>
+								<th class="aglin-center">浏览量占比</th>
+								<th class="aglin-center">访客数UV</th>
+								<th class="aglin-center">UV占比</th>
+								<th class="aglin-center">IP数</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</section>
+</@layout>
+<script>
+	var chartOption_os;
+	var chartOption_browser;
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chartOption2 = data.chartOption2;
+				var chartOption3 = data.chartOption3;
+				chartOption_os = $.parseJSON(chartOption2);
+				chartOption_browser = $.parseJSON(chartOption3);
+				var chart = echarts.init(document.getElementById('chartDiv'),
+				'infographic');
+				chart.setOption(chartOption_os);
+				$(".csvExportTab").click(function() {
+					changeChart();
+				});
+				tableQuery({
+					"aaData" : data.data_terminalos,
+					"id" : "#os_table",
+					bPaginate : false,
+					bInfo : false,
+					bFilter : false,
+					bLengthChange : false,
+					"aoColumnDefs": [{
+	                    "targets": [4], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              },{
+	                    "targets": [6], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              }]
+				});
+				tableQuery({
+					"aaData" : data.data_terminalbrowser,
+					"id" : "#table",
+					bPaginate : false,
+					bInfo : false,
+					bFilter : false,
+					bLengthChange : false,
+					"aoColumnDefs": [{
+	                    "targets": [4], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              },{
+	                    "targets": [6], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              }]
+				});
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+	var flag=true;
+	function changeChart() {
+		var chart = echarts.init(document.getElementById('chartDiv'),
+				'infographic');
+		if (flag) {
+			chart.setOption(chartOption_browser);
+			flag=false;
+		} else {
+			chart.setOption(chartOption_os);
+			flag=true;
+		}
+	}
+</script>

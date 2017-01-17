@@ -1,0 +1,294 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li>移动分析</li>
+		<li>地域分布</li>
+	</ul>
+</div>
+<section id="content">
+
+    <div style="margin: -20px -30px 30px -30px; background: #E0EAEC; padding-top: 20px">
+        <div id="provinceDiv" style="height: 400px; margin: 0px 30px 0px 30px;"></div>
+    </div>
+    <#include "/common/_dateQuery.html"/>
+    <div class="clear"></div>
+
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="app_area_query"><a
+						href="#area" data-toggle="tab"><i class="icon-calendar"></i>&nbsp;地域分布</a>
+				</li>
+				<li class="csvExportTab" csvAction="app_area_phone"><a
+						href="#areaPhone" data-toggle="tab"><i
+						class="icon-screen-smartphone"></i>&nbsp;按版本地域分布</a></li>
+				<li class="csvExportTab" csvAction="app_area_channel"><a
+						href="#areaChannel" data-toggle="tab"><i
+						class="icon-equalizer text-muted"></i>&nbsp;按渠道地域分布</a></li>
+				<li class="csvExportTab" csvAction="app_area_os"><a
+						href="#areaOs" data-toggle="tab"><i
+						class="icon-screen-smartphone"></i>&nbsp;按手机os地域分布</a></li>
+			</ul>
+			<span class="hidden-sm"><a href="/csv/app_area_query" id="csvExport" class="btn btn-dark btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="area">
+					<table id="table1" class="table table-striped b-light">
+						<thead>
+						<tr>
+							<th>地市</th>
+							<th>日期</th>
+							<th>新增用户</th>
+							<th>占比</th>
+							<th>启动次数</th>
+							<th>注册用户数</th>
+							<th>新注册用户数</th>
+							<th>平均访问深度</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+
+				<div class="tab-pane fade" id="areaPhone">
+					<table id="table2" class="table table-striped b-light">
+						<thead>
+						<tr>
+							<th>地市</th>
+							<th>日期</th>
+							<th>新增用户</th>
+							<th>占比</th>
+							<th>启动次数</th>
+							<th>注册用户数</th>
+							<th>新注册用户数</th>
+							<th>平均访问深度</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="areaChannel">
+					<table id="table3" class="table table-striped b-light">
+						<thead>
+						<tr>
+							<th>地市</th>
+							<th>日期</th>
+							<th>新增用户</th>
+							<th>占比</th>
+							<th>启动次数</th>
+							<th>注册用户数</th>
+							<th>新注册用户数</th>
+							<th>平均访问深度</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="areaOs">
+					<table id="table4" class="table table-striped b-light">
+						<thead>
+						<tr>
+							<th>地市</th>
+							<th>日期</th>
+							<th>新增用户</th>
+							<th>占比</th>
+							<th>启动次数</th>
+							<th>注册用户数</th>
+							<th>新注册用户数</th>
+							<th>平均访问深度</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('provinceDiv'), 'macarons');
+				var chartOption = data.chartOption;
+
+                tableQuery({
+                    "aaData" : data.data,
+                    "id" : "#table1",
+                    "aoColumnDefs": [{
+                        "targets": [3], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    }]
+                });
+                tableQuery({
+                    "aaData" : data.dataAreaChannel,
+                    "id" : "#table2",
+                    "aoColumnDefs": [{
+                        "targets": [4], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    }]
+                });
+                tableQuery({
+                    "aaData" : data.dataAreaPhone,
+                    "id" : "#table3",
+                    "aoColumnDefs": [{
+                        "targets": [4], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    }]
+                });
+                tableQuery({
+                    "aaData" : data.dataAreaOs,
+                    "id" : "#table4",
+                    "aoColumnDefs": [{
+                        "targets": [4], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    }]
+                });
+
+                chart.setOption($.parseJSON(chartOption));
+			}
+		};
+		commonAjax(ajaxOption);
+	}
+	// 	provinceoption = {
+	// 		backgroundColor : "#E0EAEC",
+	// 		title : {
+	// 			x : 'right',
+	// 			subtext : '2015-08-10'
+	// 		},
+	// 		tooltip : {
+	// 			trigger : 'item'
+	// 		},
+	// 		grid : {
+	// 			x : 40,
+	// 			x2 : 10,
+	// 			y : 30,
+	// 			y2 : 30,
+	// 			borderWidth : 0
+	// 		},
+	// 		legend : {
+	// 			orient : 'vertical',
+	// 			x : 'right',
+	// 			data : [ '浏览量PV' ]
+	// 		},
+	// 		dataRange : {
+	// 			min : 0,
+	// 			max : 1000,
+	// 			x : 'left',
+	// 			y : 'bottom',
+	// 			text : [ '高', '低' ], // 文本，默认为数值文本
+	// 			calculable : true
+	// 		},
+	// 		toolbox : {
+	// 			show : false
+	// 		},
+	// 		series : [ {
+	// 			name : '浏览量PV',
+	// 			type : 'map',
+	// 			mapType : '四川',
+	// 			roam : false,
+	// 			itemStyle : {
+	// 				normal : {
+	// 					label : {
+	// 						show : true
+	// 					}
+	// 				},
+	// 				emphasis : {
+	// 					label : {
+	// 						show : true
+	// 					}
+	// 				}
+	// 			},
+	// 			data : [ {
+	// 				name : '广元市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '巴中市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '达州市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '成都市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '南充市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '重庆市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '广安市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '凉山彝族自治州',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '阿坝藏族羌族自治州',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '绵阳市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '德阳市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '遂宁市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '资阳市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '内江市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '乐山市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '自贡市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '眉山市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '宜宾市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '泸州市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '雅安市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '甘孜藏族自治州',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			}, {
+	// 				name : '攀枝花市',
+	// 				value : Math.round(Math.random() * 1000)
+	// 			} ]
+	// 		} ]
+	// 	};
+	// 	var provincediv = document.getElementById('provincediv');
+	// 	if (provincediv) {
+	// 		var provincediv = echarts.init(document.getElementById('provincediv'),
+	// 				'roma');
+	// 		// 为echarts对象加载数据
+	// 		provincediv.setOption(provinceoption);
+	// 	}
+</script>

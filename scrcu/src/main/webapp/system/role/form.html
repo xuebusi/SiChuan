@@ -1,0 +1,89 @@
+<#include "/common/_layout.html"/> <@layout>
+<link rel="stylesheet" href="/static/js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/static/js/ztree/js/jquery.ztree.all-3.5.min.js"></script>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>角色<#if data.cname==''>添加 <#else>编辑 </#if></li>
+	</ul>
+</div>
+<section id="content">
+	<form method="post" class="form-horizontal" action="">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">名称</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="sysgroup_cname" name="sysgroup.cname" size="20" placeholder="请填写角色名称" value="${data.cname!}"/>
+			</div>
+			<div class="col-sm-4">
+			<button class="btn btn-primary" type="submit">提交</button>
+			</div>
+		</div>
+	</form>
+	<div class="line line-dashed b-b line-lg pull-in"></div>
+	<button onclick="selectAll(false)" class="button  button-little bg-blue">清空</button>
+	<button onclick="selectAll(true)" class="button  button-little bg-blue">全选</button>
+	<div id="treex" class="ztree dialogs-delegate"></div>
+	</div>
+</section>
+</@layout>	
+<script type="text/javascript">	
+	var res = ${res!0};
+	var selectAll = function(flg){
+		$.post('${root}/system/role/set_res_all/${data.id!}', {checked:flg},function(data){
+			res = data;
+			var treeObj = $.fn.zTree.getZTreeObj("treex");
+			treeObj.reAsyncChildNodes(null, "refresh");
+		},'JSON');
+	}
+	var  filter = function(node) {
+		cs = node.getCheckStatus();
+			return (cs.checked);
+	}
+	function zTreeBeforeCheck(treeId, treeNode) {
+		return false;
+	};
+	var getnodes = function(){
+		var treeObj = $.fn.zTree.getZTreeObj("treex");
+		var nodes =  treeObj.getNodesByFilter(filter); 
+	}
+	var zTreeOnCheck = function(event, treeId, treeNode) {				
+		$.post('${root}/system/role/set_res/${data.id!}-'+treeNode.id, {checked:treeNode.checked});
+	};
+	var zTreeOnAsyncSuccess = function(event, treeId, treeNode, msg) {	
+		var treeObj = $.fn.zTree.getZTreeObj(treeId);
+		var pid;
+		if(typeof treeNode =='undefined' || treeNode==null) 
+			pid = 0;
+		else
+			pid = treeNode.id;
+		var cnodes = treeObj.getNodesByParam("pid", pid, null);  
+		for (var i = 0; i < cnodes.length; i++) {		
+			if ($.inArray(cnodes[i].id, res)!=-1) {
+				treeObj.checkNode(cnodes[i], true, true);
+			};
+			
+		};
+	};
+	var setting = {
+		callback: {
+			onAsyncSuccess: zTreeOnAsyncSuccess,
+			onCheck: zTreeOnCheck
+		},
+		check: {
+			enable: true,
+			chkboxType: { "Y": "", "N": "" }
+		},
+		async : {
+			enable : true,
+			url : "${root}/system/Resource/getlist",
+			autoParam : ["id"],
+			type : "get"
+		},		
+		view: {
+			nameIsHTML: true
+		}
+	};
+	$(function() {
+		$.fn.zTree.init($("#treex"), setting);
+	});
+</script>

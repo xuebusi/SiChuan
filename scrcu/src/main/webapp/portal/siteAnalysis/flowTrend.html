@@ -1,0 +1,105 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>网站统计</li>
+		<li>流量趋势</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div id="chartDiv" style="height: 280px;" ></div>
+	<div class="clear">
+		<hr />
+	</div>
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="portal_siteAnalysis_flowTrend">
+					<a href="#aa" data-toggle="tab" columns="0,1,2,3,4,5,8"><i class="icon-calendar"></i>&nbsp;默认</a>
+				</li>
+				<li class="csvExportTab" csvAction="portal_siteAnalysis_flowTrend">
+					<a href="#aa" data-toggle="tab" columns="0,1,7,10"><i class="icon-screen-smartphone"></i>&nbsp;新访客指标</a>
+				</li>
+			</ul>
+			<span class="hidden-sm pull-right"><a href="" id="csvExport" csvAction="/csv/portal_siteanalysis_flowtrend" class=" btn btn-default btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px;">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="aa">
+					<table id="table" class="table table-striped m-b-none table_select_row">
+						<thead>
+						<tr>
+							<th>日期</th>
+							<th>时段</th>
+							<th>浏览量(PV)</th>
+							<th>访客数(UV)</th>
+							<th>IP数</th>
+							<th show="false">来访次数</th>
+							<th show="false">新访客数</th>
+							<th>登录用户数</th>
+							<th show="false">登录比</th>
+							<th show="false">平均访问深度</th>
+							<th show="false">平均时长</th>
+							<th show="false">停留时长</th>
+							<th show="false">平均停留时长</th>
+							<th show="false">贡献下游浏览量</th>
+							<th show="false">二跳率</th>
+							<th show="false">跳出率</th>
+							<th show="false">展现量</th>
+							<th show="false">点击量</th>
+							<th show="false">唯一点击量</th>
+							<th show="false">点击率</th>
+							<th show="false">唯一点击率</th>
+							<th show="false">到达量</th>
+						</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+                var chart = echarts.init(document.getElementById('chartDiv'),
+                    'infographic');
+                var chartOption = data.chartOption;
+                chart.setOption($.parseJSON(chartOption));
+				var table = tableQuery({
+				    "aaData" : data.data,
+                    "sDom" : "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-4'i><'col-sm-8'p>>",
+                });
+				$('[href="#aa"]').click(function() {
+					var columns = $(this).attr("columns").split(",");
+					for (var i = 0; i < 22; i++) {
+						var column = table.column(i);
+						column.visible(false);
+					}
+					for (var i = 0; i < columns.length; i++) {
+						var index = columns[i];
+						var column = table.column(index);
+						column.visible(true);
+					}
+				});
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+
+</script>

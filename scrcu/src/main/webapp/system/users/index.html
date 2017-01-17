@@ -1,0 +1,56 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>用户管理</li>
+	</ul>
+
+</div>
+<section id="content">
+	<section class="vbox">
+		<section class="scrollable">
+			<div class="row">
+				<div class="col-sm-12">
+					<section class="panel panel-default">
+						<header class="panel-heading"> 用户列表 </header>
+						<table class="table table-striped m-b-none" style="text-align: center;">
+							<thead>
+								<tr>
+									<th style="text-align: center;">编号</th>
+									<th style="text-align: center;">用户名</th>
+									<th style="text-align: center;">创建时间</th>
+									<th style="text-align: center;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<#list userPage.getList() as x>
+								<tr>
+									<td>${x.id}</td>
+									<td>${x.username}</td>
+									<td>${x.create_time}</td>
+									<td>
+										<div class="btn-group">
+											<a href="${root}/system/users/edit/${x.id}"><label class="btn btn-sm btn-info">编辑</label></a> <a
+												href="${root}/system/users/delete/${x.id}"
+											><label class="btn btn-sm btn-success">删除</label></a>
+										</div>
+									</td>
+								</tr>
+								</#list>
+							</tbody>
+						</table>
+					</section>
+					<a href="${root}/system/users/add" class="btn btn-s-md btn-info">新增</a>
+				</div>
+			</div>
+		</section>
+	</section>
+</section>
+
+
+
+
+
+
+
+</@layout>

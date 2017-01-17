@@ -1,0 +1,313 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a><i class="fa fa-home"></i> 用户画像</a></li>
+		<li>个人画像</li>
+	</ul>
+</div>
+<section id="content">
+	<div id="userinfo">
+		<div class="panel panel-default table-responsive clear">
+			<header class=" panel-heading text-right clear" style="background-color: #fff !important">
+				<ul class="nav nav-tabs pull-left clear">
+					<li class="active"><a href="#"><i class="fa fa-tags text-primary"></i>&nbsp;<span class="text-primary">用户标签</span></a></li>
+				</ul>
+			</header>
+			<div class="panel-body clearfix" style="padding-left: 0px; padding-right: 0px">
+				<div class="col-sm-4">
+					<table id="table1" class="datatables table table-striped" style="border: 1px solid #eaeef1">
+						<thead>
+							<tr>
+								<th colspan="2">基本信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>性别</td>
+								<td name="sex"></td>
+							</tr>
+							<tr>
+								<td>婚姻情况</td>
+								<td name="marriage"></td>
+							</tr>
+							<tr>
+								<td>教育程度</td>
+								<td name="edu_bg"></td>
+							</tr>
+							<tr>
+								<td>年龄</td>
+								<td name="age"></td>
+							</tr>
+							<tr>
+								<td>出生日期</td>
+								<td name="birthday"></td>
+							</tr>
+							<tr>
+								<td>年代</td>
+								<td name="generation"></td>
+							</tr>
+							<tr>
+								<td>星座</td>
+								<td name="constellation"></td>
+							</tr>
+							<tr>
+								<td>职业</td>
+								<td name="job"></td>
+							</tr>
+							<tr>
+								<td>公司行业</td>
+								<td name="industry"></td>
+							</tr>
+							<tr>
+								<td>持卡年限</td>
+								<td name="ck_year"></td>
+							</tr>
+							<tr>
+								<td>注册年限</td>
+								<td name="zc_year"></td>
+							</tr>
+							<tr>
+								<td>注册地区</td>
+								<td name="inn_org_zone_cd"></td>
+							</tr>
+							<tr>
+								<td>用户卡类别</td>
+								<td name="card_cat_cd"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-sm-4" id="human" style="height: 470px;"></div>
+				<div class="col-sm-4">
+					<table id="table1" class="datatables table table-striped" style="border: 1px solid #eaeef1; border-bottom: 0px">
+						<thead>
+							<tr>
+								<th colspan="2">兴趣偏好</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>终端</td>
+								<td name="terminal"></td>
+							</tr>
+							<tr>
+								<td>使用时段</td>
+								<td name="use_time"></td>
+							</tr>
+							<tr>
+								<td>搜索引擎</td>
+								<td name="searchengine"></td>
+							</tr>
+							<tr>
+								<td>支付转账渠道</td>
+								<td name="pay_channel"></td>
+							</tr>
+							<tr>
+								<td>交易偏好</td>
+								<td name="trade"></td>
+							</tr>
+							<tr>
+								<td>贷款用途</td>
+								<td name="loan_use"></td>
+							</tr>
+							<tr>
+								<td>担保方式</td>
+								<td name="guaranteemethod"></td>
+							</tr>
+						</tbody>
+					</table>
+					<table id="table1" class="datatables table table-striped" style="border: 1px solid #eaeef1; border-top: 0px">
+						<thead>
+							<tr>
+								<th colspan="2">级别类型</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>用户群体类型</td>
+								<td name="colony"></td>
+							</tr>
+							<tr>
+								<td>安全认证方式</td>
+								<td name="security_type"></td>
+							</tr>
+							<tr>
+								<td>用户认证级别</td>
+								<td name="user_cert_level"></td>
+							</tr>
+							<tr>
+								<td>信用评级</td>
+								<td name="ass_grade"></td>
+							</tr>
+							<tr>
+								<td>个人风险等级</td>
+								<td name="risk_level"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default table-responsive clear">
+			<header class=" panel-heading text-right bg-light clear" style="background-color: #fff !important">
+				<ul class="nav nav-tabs pull-left clear">
+					<li class="active"><a href="#this"><i class="fa fa-exchange text-primary"></i>&nbsp;<span
+							class="text-primary"
+						>交易偏好</span></a></li>
+				</ul>
+			</header>
+			<div class="panel-body clearfix">
+				<div class="col-lg-6">
+					<div id="consumechart" style="height: 250px"></div>
+					<ul id="test" class="list-group no-radius">
+						<li class="list-group-item"><span id="tradeCount" class="pull-right"></span> <span class="label bg-primary">1</span>
+							&nbsp;近30天交易次数</li>
+						<li class="list-group-item"><span id="tradeMoney" class="pull-right"></span> <span class="label bg-info">2</span>
+							&nbsp;近30天交易总金额</li>
+						<li class="list-group-item"><span id="maxCountTypeDesc" class="pull-right"></span> <span
+							class="label bg-success"
+						>3</span> &nbsp;交易次数倾向</li>
+						<li class="list-group-item"><span id="maxMoneyTypeDesc" class="pull-right"></span> <span
+							class="label bg-light"
+						>4</span> &nbsp;交易金额倾向</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<div id="cunsumediv" style="height: 250px"></div>
+					<div id="radar1" style="height: 200px"></div>
+				</div>
+			</div>
+		</div>
+		<div class="panel panel-default table-responsive clear">
+			<header class=" panel-heading text-right bg-light clear" style="background-color: #fff !important">
+				<ul class="nav nav-tabs pull-left clear">
+					<li class="active "><a href="#this"><i class="icon-users text-primary"></i>&nbsp;<span
+							class="text-primary"
+						>人际关系</span></a></li>
+				</ul>
+			</header>
+			<div class="panel-body clearfix">
+				<div class="col-md-6">
+					<div id="relationdiv" style="height: 300px"></div>
+				</div>
+				<div class="col-md-6">
+					<ul class="list-group no-radius" id=relationgroup>
+						<li class="list-group-item"><span id=hotName class="pull-right"></span> <span class="label bg-primary">1</span>
+							&nbsp;转账次数最多的人</li>
+						<li class="list-group-item"><span id=relationtime class="pull-right"></span> <span
+							class="label bg-info"
+						>2</span> &nbsp;最近一次转账时间</li>
+						<li class="list-group-item"><span id=relationname class="pull-right"></span> <span class="label bg-success">3</span>
+							&nbsp;最近一次转账对象</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</@layout>
+<script>
+	$(document)
+			.ready(
+					function() {
+						var ajaxOption = {
+							url : window.location.href,
+							success : function(data) {
+								userTags=data.userTags;
+								human(userTags['sex']=="女"?"bodyFemale":"bodyMale");
+								$.each(userTags, function(key, val) { 
+									$("[name='"+key+"']").html(userTags[key]);
+							　  　}); 
+								
+								var chart = echarts.init(document
+										.getElementById('consumechart'),
+										'infographic');
+								var radar1 = echarts.init(document
+										.getElementById('radar1'),
+										'infographic');
+								var cunsumediv = echarts.init(document
+										.getElementById('cunsumediv'),
+										'infographic');
+								var charelat = echarts.init(document
+										.getElementById('relationdiv'),
+										'infographic');
+								var chartOption = data.chartOption;
+								var chartOptionbq = data.chartOptionbq;
+								var relationdiv = data.relationdiv;
+
+								chart.setOption($.parseJSON(chartOption));
+								charelat.setOption($.parseJSON(relationdiv));
+								radar1.setOption($.parseJSON(data.radar1));
+								cunsumediv.setOption($.parseJSON(data.moneyData));
+
+								$("#tradeMoney").html(data.tradeMoney);
+								$("#tradeCount").html(data.tradeCount);
+								$("#maxCountTypeDesc").html(data.maxCountTypeDesc);
+								$("#maxMoneyTypeDesc").html(data.maxMoneyTypeDesc);
+								 
+								$("#relationname").html(data.relationname);
+								$("#hotName").html(data.hotName);
+								$("#relationtime").html(data.relationtime);
+
+							}
+						}
+						commonAjax(ajaxOption);
+					});
+	function human(type){
+		// 自定义扩展图表类型：mapType = body
+		echarts.util.mapData.params.params.bodyMale = {
+		    getGeoJson: function (callback) {
+		        $.ajax({
+		            url: "/static/echarts/svg/body-male.svg",
+		            dataType: 'xml',
+		            success: function(xml) {
+		                callback(xml)
+		            }
+		        });
+		    }
+		}
+		// 自定义扩展图表类型：mapType = body
+		echarts.util.mapData.params.params.bodyFemale = {
+		    getGeoJson: function (callback) {
+		        $.ajax({
+		            url: "/static/echarts/svg/body-female.svg",
+		            dataType: 'xml',
+		            success: function(xml) {
+		                callback(xml)
+		            }
+		        });
+		    }
+		}
+		option = { 
+		    dataRange: {show:false,
+		        min: 10,
+		        max: 100 
+		    },
+		    series : [
+		        {
+		            name: '男',
+		            type: 'map',
+		            mapType: type,
+		            roam:false,
+		            itemStyle:{
+		                normal:{label:{show:false}},
+		                emphasis:{label:{show:false}}
+		            },
+		            data:[
+		                {name: '头部', value: 90},
+		                {name: '颈部', value: 80},
+		                {name: '胸部', value: 60},
+		                {name: '腹部', value: 60},
+		                {name: '生殖', value: 50},
+		                {name: '上肢', value: 40},
+		                {name: '下肢', value: 30}
+		            ] 
+		        }
+		    ]
+		};
+		//使用
+	    var chart = echarts.init(document.getElementById('human'),"default");
+		chart.setOption(option);
+	}
+</script>

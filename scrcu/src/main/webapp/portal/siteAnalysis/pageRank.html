@@ -1,0 +1,112 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>网站统计</li>
+		<li>页面排行</li>
+	</ul>
+</div>
+<section id="content">
+	<!-- 引入日期查询  -->
+	<#include "/common/_dateQuery.html"/>
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="portal_pageRank"><a href="#data" data-toggle="tab"><i
+						class="icon-calendar"
+					></i>&nbsp;访客页面排行</a></li>
+				<li class="csvExportTab" csvAction="portal_siteAnalysis_userVisitPage_query"><a href="#user_data" data-toggle="tab"><i
+						class="icon-screen-smartphone"
+					></i>&nbsp;会员页面排行</a></li>
+			</ul>
+			<span class="hidden-sm pull-right"><a href="" id="csvExport" csvAction="/csv/portal_pageRank"
+				class=" btn btn-default btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="data">
+					<table id="table" class="datatables table table-striped " data-ride="datatables">
+						<thead>
+							<tr>
+								<th class="displayTitle">网址</th>
+								<th class="w-3">浏览量</th>
+								<th class="w-3">访客数</th>
+								<th class="w-4">访问次数</th>
+								<th class="w-3">IP数</th>
+								<th class="w-6">平均停留时长</th>
+								<th class="w-5">贡献浏览量</th>
+								<th class="w-3">跳出率</th>
+								<th class="w-3">退出率</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="user_data">
+					<table id="userTable" class="datatables table table-striped " data-ride="datatables">
+						<thead>
+							<tr>
+								<th class="displayTitle">网址</th>
+								<th class="w-3">浏览量</th>
+								<th class="w-4">访问次数</th>
+								<th class="w-6">平均停留时长</th>
+								<th class="w-5">贡献浏览量</th>
+								<th class="w-4">跳出率</th>
+								<th class="w-4">退出率</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</section>
+</@layout>
+<script>
+function query(flag) {
+	if (flag) {
+		$("#yesterdayButton").click();
+		return;
+	}
+	var start = $("#start_dt").val();
+	var end = $("#end_dt").val();
+	var ajaxOption = {
+		url : window.location.href + "?start_dt=" + start + "&end_dt="
+				+ end,
+		success : function(data) {
+			tableQuery({
+				"aaData" : data.userData,
+                "sDom" : "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-4'i><'col-sm-8'p>>",
+                "id" : "#userTable",
+				"aoColumnDefs": [{
+                    "targets": [6], // 目标列位置，下标从0开始
+                    "render": function(data) { // 返回自定义内容
+                  	  return getPercent(data);
+                    }},{
+                    "targets": [7], // 目标列位置，下标从0开始
+                    "render": function(data) { // 返回自定义内容
+                  	  return getPercent(data);
+                    }
+              }]
+			});
+			tableQuery({
+				"aaData" : data.data,
+                "sDom" : "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-4'i><'col-sm-8'p>>",
+                "id" : "#table",
+				"aoColumnDefs": [{
+                    "targets": [7], // 目标列位置，下标从0开始
+                    "render": function(data) { // 返回自定义内容
+                  	  return getPercent(data);
+                    }
+              }]
+			});
+		}
+	};
+	commonAjax(ajaxOption);
+}
+</script>

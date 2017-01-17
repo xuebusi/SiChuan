@@ -1,0 +1,86 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title"><#if data.isNew()>添加 <#else>编辑 </#if>资源</h4>
+		</div>
+		<form method="post" class="form-horizontal" action="" onsubmit="return ajaxSubmit();" id="AjaxForm">
+			<div class="modal-body">
+				<input type="hidden" id="sysres_pid" name="sysres.pid" value="${data.pid!}"/>
+				<input type="hidden" id="sysres_id" name="sysres.id" value="${data.id!}"/>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">名称</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control " id="sysres_cname" name="sysres.cname" size="50"
+							placeholder="请填写名称" data-validate="required:请填写名称" value="${data.cname!}"
+						/>
+					</div>
+				</div>
+				<div class="line line-dashed b-b line-lg pull-in"></div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">资源</label>
+					<div class="col-sm-8">
+						<select id="sysres_ak" name="sysres.ak" value="${data.ak!}" class="form-control m-b">
+							<option value="">请选择资源</option> <#list aks as ak>
+							<option value="${ak}">${ak}</option> </#list>
+						</select>
+					</div>
+					<script>
+						$("#sysres_ak").val('${data.ak!}');
+					</script>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+				<input class="btn btn-primary" type="submit" value="提交"></input>
+			</div>
+		</form>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+
+<script src="${root}/static/js/jquery.form.js"></script>
+<script>
+	var url;
+	var id = $("#sysres_id").val();
+	var pid = $("#sysres_pid").val();
+	var isnew = true;
+	if (id == null || id == "") {
+		url = "/system/Resource/create/" + pid;
+	} else {
+		isnew = false;
+		url = "/system/Resource/update/" + pid;
+	}
+	var ajaxSubmit = function() {
+		$('#AjaxForm').ajaxSubmit(
+				{
+					url : url,
+					dataType : "json",
+					success : function(json) {
+						if (json.success) {
+							var treeObj = $.fn.zTree
+									.getZTreeObj('treex');
+							console.log(treeObj);
+							console.log(isnew);
+							if (!isnew) {
+								var node = treeObj.getNodeByParam("id",
+										json.data.id, null);
+								if (node != null) {
+									node.name = json.data.name
+									treeObj.updateNode(node);
+								}
+								console.log(json.data.id);
+							} else {
+								var node = treeObj.getNodeByParam("id",
+										json.data.pid, null);
+								console.log(json.data.pid);
+								treeObj.addNodes(node, json.data);
+							}
+							$('[data-dismiss="modal"]').click();
+						}
+					}
+				});
+		return false;
+	}
+</script>

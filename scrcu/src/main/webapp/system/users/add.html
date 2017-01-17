@@ -1,0 +1,18 @@
+<#include "/common/_layout.html" /> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>用户新增</li>
+	</ul>
+
+</div>
+<div class="col-sm-12 wrapper">
+	<section class="panel panel-default">
+		<header class="panel-heading">用户新增</header>
+		<div class="panel-body">
+			<form class="bs-example form-horizontal" action="/system/users/save"><#include
+				"_form.html" /></form>
+		</div>
+	</section>
+</div>
+</@layout>

@@ -1,0 +1,60 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+    <ul class="breadcrumb">
+        <li><i class="fa fa-home"></i>&nbsp;事件分析</li>
+        <li>事件趋势</li>
+    </ul>
+</div>
+<section id="content">
+    <!-- 引入日期查询  -->
+    <#include "/common/_dateQuery.html"/>
+
+    <div class="panel panel-default table-responsive clear">
+        <header class="panel-heading">
+            <i class="icon-list padder-xs"></i>事件趋势
+            <span class="hidden-sm pull-right"><a href="" csvAction="/csv/app_event_tendency" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+                    class="fa fa-cloud-download"
+            ></i>&nbsp;导出</a></span>
+        </header>
+        <div class="panel-body" style="padding: 0px">
+            <table id="table1" class="table table-striped b-light">
+                <thead>
+                <tr>
+                    <th>事件ID</th>
+                    <th>事件名称</th>
+                    <th>昨日完成次数</th>
+                    <th>昨日完成独立用户数</th>
+                    <th>今日完成次数</th>
+                    <th>今日完成独立用户数</th>
+                    <th>详情</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+
+</section>
+</@layout>
+
+<script>
+    function query(flag) {
+        if (flag) {
+            $("#sevendayButton").click();
+            return;
+        }
+        var start = $("#start_dt").val();
+        var end = $("#end_dt").val();
+        var ajaxOption = {
+            url : window.location.href + "?start_dt=" + start + "&end_dt="
+            + end,
+            success : function(data) {
+                tableQuery({
+                    "aaData" : data.tendencyData,
+                    "id" : "#table1"
+                });
+            }
+        };
+        commonAjax(ajaxOption);
+    }
+</script>

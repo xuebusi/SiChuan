@@ -1,0 +1,71 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><i class="fa fa-home"></i>&nbsp;业务分析</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div id="chartDiv" style="height: 280px;"></div>
+	<div class="clear">
+		<hr />
+	</div>
+	<!-- 引入日期查询  -->
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading bg-light clear">
+			<i class="icon-calendar"></i>&nbsp;日期分布 <span class="hidden-sm pull-right"><a href="/csv/businessAnalysis" id="csvExport"
+				class="btn btn-dark btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<table id="table1" class="table table-striped b-light">
+					<thead>
+						<tr>
+							<th>日期</th>
+							<th>UV</th>
+							<th>登录用户数</th>
+							<th>交易户数</th>
+							<th>动账交易户数</th>
+							<th>动账交易笔数</th>
+							<th>交易转化率</th>
+							<th>交易金额</th>
+							<th>户均交易额</th>
+							<th>笔均交易额</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+		<hr />
+	</div>
+</section>
+</@layout>
+
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#sevendayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('chartDiv'),
+						'infographic');
+				var chartOption = data.chartOption;
+				chart.setOption($.parseJSON(chartOption));
+				tableQuery({
+					"aaData" : data.data,
+					"id" : "#table1"
+				});
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+</script>

@@ -1,0 +1,32 @@
+
+<input type="hidden" name="users.id" value="${(users.id)!}" />
+<input type="hidden" name="custom.id" value="${(custom.id)!}" />
+<div class="form-group">
+	<label class="col-lg-4 control-label">报表名称</label>
+	<div class="col-lg-5">
+		<input class="form-control" placeholder="报表名称" type="text" name="custom.name" value="${(custom.name)!}">
+		<span class="help-block m-b-none">${nameMsg!}</span>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-4 control-label">报表地址</label>
+	<div class="col-lg-6">
+		<textarea class="form-control" rows="5" placeholder="Tableau报表地址" type="text" name="custom.url">${(custom.url)!}</textarea>
+		<span class="help-block m-b-none">${(urlMsg)!}</span>
+	
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-4 control-label">描述</label>
+	<div class="col-lg-5">
+		<textarea class="form-control" rows="3" placeholder="描述" type="text" name="custom.desc">${(custom.desc)!}</textarea>
+		<span class="help-block m-b-none">${(descMsg)!}</span>
+	
+	</div>
+</div>
+<div class="form-group">
+	<div class="col-lg-offset-4 col-lg-10">
+		<button type="submit" class="btn btn-sm btn-default">保存</button>
+		<button type="button" onclick="window.history.back()" class="btn btn-sm btn-default">返回</button>
+	</div>
+</div>

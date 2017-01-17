@@ -1,0 +1,113 @@
+<div class="col-sm-12" >
+	<form action="" id="dateQueryForm" method="post">
+		<div class="form-group">
+			<div class="col-sm-4">
+				<div class="btn-group" id="dayChange">
+					<button type="button" id="yesterdayButton" class="btn btn-default" onclick="yesterdayQuery()">昨天</button>
+					<button type="button" id="sevendayButton" class="btn btn-default" onclick="sevendayQuery()">近7天</button>
+					<button type="button" id="thirtydayButton" class="btn btn-default" onclick="thirtydayQuery()">近30天</button>
+					<button type="button" id="yearButton" class="btn btn-default" onclick="yearQuery()">近1年</button>
+				</div>
+			</div>
+			<div class="col-sm-3" id="start_dt_div">
+				<div class="input-group m-b date" data-date="yyyy-mm-dd">
+					<input class="input-sm form-control" id="start_dt" value="${start_dt!}" name="start_dt"
+						type="text" data-date-format="yyyy-mm-dd"
+					>
+					<i class="add-on input-group-addon icon-calendar"></i>
+				</div>
+			</div>
+			<label class="col-sm-1 control-label" style="margin-top: 8px; margin-right: -50px; margin-left: -20px">至 </label>
+			<div class="col-sm-3" id="end_dt_div">
+				<div class="input-group m-b date" data-date="yyyy-mm-dd">
+					<input class="input-sm form-control" id="end_dt" value="${end_dt!}" name="end_dt" type="text"
+						data-date-format="yyyy-mm-dd"
+					>
+					<i class="add-on input-group-addon icon-calendar"></i>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-sm btn-primary" id="dateQuery" onclick="commonQuery()">查询</button>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="clear">
+	<hr />
+</div>
+<script>
+    $(document).ready(function () {
+        $('#start_dt_div .input-group.m-b.date').datepicker({
+			format:'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+        $('#end_dt_div .input-group.m-b.date').datepicker({
+			format:'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+
+</script>
+<script>
+	var url = window.location.href;
+	var table;
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var option = {
+					"aaData" : data.data
+				};
+				tableQuery(option);
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+
+	$(document).ready(function() {
+		$("#dayChange .btn").click(function() {
+			$("#dayChange .btn").removeClass("active");
+			$(this).addClass("active");
+		});
+		if ($("#start_dt").val() == "") {
+			$("#start_dt").val(getDateStr(-1));
+		}
+		csvExport();
+		commonQuery(true);
+	});
+	//设置tab csv导出action
+
+	//设置csv导出action
+	function csvExport() {
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		//tab excel导出
+		$("header .nav-tabs .csvExportTab").click(
+				function() {
+					var action = $(this).attr("csvAction");
+					action = "/csv/" + action;
+					$("#csvExport").attr("href",
+							action + "?start_dt=" + start + "&end_dt=" + end);
+				});
+		var action = "/csv/"
+				+ $("header .nav-tabs .active.csvExportTab").attr("csvAction");
+		$("#csvExport").attr("href",
+				action + "?start_dt=" + start + "&end_dt=" + end);
+		//excel导出
+		$(".csvExport").each(
+				function() {
+					var action = $(this).attr("csvAction");
+					$(this).attr("href",
+							action + "?start_dt=" + start + "&end_dt=" + end);
+				});
+	}
+</script>

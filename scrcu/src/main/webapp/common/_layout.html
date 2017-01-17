@@ -1,0 +1,121 @@
+<#macro layout>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<title>用户分析系统</title>
+<link rel="icon" sizes="any" mask="" href="/static/imgs/logo.png">
+<link rel="shortcut icon" href="/static/images/favicon.png" type="image/x-icon" />
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/animate.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/simple-line-icons.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/font.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/app.css" type="text/css" />
+<link rel="stylesheet" href="/static/css/nongxin.css" type="text/css" />
+<link rel="stylesheet" href="/static/js/datatables/datatables.css" type="text/css" />
+<link rel="stylesheet" href="/static/js/datepicker/bootstrap-datepicker.css" type="text/css" />
+<link rel="stylesheet" href="/static/waves/waves.css" type="text/css" />
+<script src="/static/js/jquery.min.js"></script>
+<!--[if lt IE 9]>
+    <script src="/static/js/ie/html5shiv.js"></script>
+    <script src="/static/js/ie/respond.min.js"></script>
+    <script src="/static/js/ie/excanvas.js"></script>
+  <![endif]-->
+</head>
+<body>
+	<header class="header header-md navbar navbar-fixed-top-xs">
+		<div class="container">
+			<div class="navbar-header aside">
+				<a href="/" class="navbar-brand text-lt"> <i class="icon-mouse" style="vertical-align: middle;"></i><span
+					class="hidden-nav-xs m-l-sm" style=
+				>用户分析系统</span>
+				</a>
+			</div>
+			<ul class="nav navbar-nav hidden-xs ">
+			<#if session["nav"]??>
+				<#list session["nav"].keySet() as kk>
+					<li><a href="${root}${session['nav'].get(kk).ak}" class="text-muted <#if session['site_type'] == kk>active </#if>">${session["nav"].get(kk).title} </a></li>
+				</#list>
+			</#if>
+			</ul>
+			<div class="navbar-right">
+				<ul class="nav navbar-nav m-n hidden-xs nav-user user">
+					<li class="dropdown"><a href="#" class="dropdown-toggle bg clear" 
+						data-toggle="dropdown"
+					> <i class="fa-user fa"></i>&nbsp;${session["username"]} <b class="caret"></b>
+					</a>
+						<ul class="dropdown-menu animated fadeInRight">
+							<li><span class="arrow top"></span> <a href="#">设置</a></li>
+							<li><a href="#"> <span class="badge bg-danger pull-right">3</span> 通知
+							</a></li>
+							<li class="divider"></li>
+							<li><a href="/logout">退出</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<section class="container main">
+			<section class="hbox stretch">
+				<!-- .aside -->
+				<aside class="bg-gray aside hidden-print" id="nav">
+					<section class="vbox">
+						<section class="w-f-md">
+							<div data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">
+								<!-- nav -->
+								<nav class="nav-primary hidden-xs">
+									<ul class="nav bg clearfix" data-ride="collapse">
+									<#if session["nav"]??>
+									<#list session["nav"].keySet() as kk>
+										<#if session["site_type"] == kk>
+											<#list session["nav"].get(kk).childNav as nav>
+											    <li class="hidden-nav-xs padder  text-xs text-muted" style="margin:8px auto;">${nav.title}</li>
+											    <#if nav.childNav??>
+											    <#list nav.childNav as child>
+											    	<li><a href="${root}${child.ak}"><i class="${child.icon}"></i><span>${child.title}</span></a></li>
+											    </#list>
+											    </#if>
+											</#list>
+										</#if>
+									</#list>
+									</#if>
+
+									</ul>
+								</nav>
+							</div>
+						</section>
+
+					</section>
+				</aside>
+				<section style="background-color: #fff;"><#nested></section>
+			</section>
+			<div class="footer clear"><small style="padding-left:15px">©2015 四川省农村信用社联合社</small></div>
+		<div class="backdrop fade bg-white" id="backdrop">
+			<div class="spinner">
+			  <div class="rect1"></div>
+			  <div class="rect2"></div>
+			  <div class="rect3"></div>
+			  <div class="rect4"></div>
+			  <div class="rect5"></div>
+			</div>
+		</div>
+	</section>
+	<!-- Bootstrap -->
+	<script src="/static/js/bootstrap.js"></script>
+	<!-- App -->
+	<script src="/static/js/app.js"></script>
+	<script src="/static/js/datatables/jquery.dataTables.min.js"></script>
+	<script src="/static/js/datatables/jquery.csv-0.71.min.js"></script>
+	<script src="/static/js/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/static/js/app.plugin.js"></script>
+	<script src="/static/echarts/echarts-all-2.2.7.js"></script>
+	<script src="/static/js/datepicker/bootstrap-datepicker.js"></script>
+	<script src="/static/waves/waves.js"></script>
+	<script src="/static/js/common.js"></script>
+</body>
+</html>
+</#macro>

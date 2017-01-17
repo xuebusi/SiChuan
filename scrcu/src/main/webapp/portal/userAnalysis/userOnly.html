@@ -1,0 +1,56 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+    <ul class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+        <li>用户统计</li>
+        <li>唯一用户分析</li>
+    </ul>
+</div>
+<section id="content">
+
+    <#include "/common/_dateQuery.html"/>
+    <section class="panel panel-default">
+        <header class="panel-heading">
+            <i class="fa-foursquare fa padder-xs"></i>唯一用户分析<span class="hidden-sm pull-right">
+            <a href="" csvAction="/csv/portal_userAnalysis_userOnly" class="csvExport btn btn-default btn-sm" style="display: inline"
+        ><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+        </header>
+        <div class="table-responsive">
+            <table id="table" class="datatables table table-striped m-b-none" data-ride="datatables">
+                <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>访客数(uv)</th>
+                    <th>登录用户数</th>
+                    <th>IP数</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div class="clear"></div>
+</section>
+</@layout>
+<script>
+    function query(flag) {
+        if (flag) {
+            $("#yesterdayButton").click();
+            return;
+        }
+        var start = $("#start_dt").val();
+        var end = $("#end_dt").val();
+        var ajaxOption = {
+            url : window.location.href + "?start_dt=" + start + "&end_dt="
+            + end,
+            success : function(data) {
+                var option = {
+                    "aaData" : data.data
+                };
+                tableQuery(option);
+            }
+        };
+        commonAjax(ajaxOption);
+    }
+</script>

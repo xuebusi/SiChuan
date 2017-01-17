@@ -1,0 +1,233 @@
+<#include "/common/_layout.html"/> <@layout>
+<section id="content" style="padding-top: 0px">
+	<section class="scrollable ">
+		<div class="m-b-md">
+			<div class="row">
+				<div class="col-sm-6">
+					<h3 class="m-b-none" id="today"></h3>
+					<small></small>
+				</div>
+				<div class="col-sm-6">
+					<div class="text-right text-left-xs">
+						<div class="m-t-md">
+							<span class="text-uc">当前用户数</span>
+							<div class="h4 m-n">
+								<strong>1,120</strong>&nbsp;<i class="text-danger fa fa-level-up"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="panel">
+			<div id="mainchart" style="height: 290px;"></div>
+			<footer class="bg-white" style="border: 1px solid #ddd; margin-top: 10px;">
+				<div class="row text-center " style="margin: 0px">
+					<div onclick="changeChart(0,this)" class="changemainchart active col-xs-3 b-r b-light wrapper-sm text-info hand">
+						<p class="h4 font-bold m-t">
+							<span id="sum_1"></span>&nbsp;<i class="text-danger fa fa-level-up"></i>
+						</p>
+						<p class="text-muted">页面展示量(PV)</p>
+					</div>
+					<div onclick="changeChart(1,this)" class="changemainchart col-xs-3 b-r wrapper-sm b-light hand">
+						<p class="h4 font-bold m-t">
+							<span id="sum_2"></span>&nbsp;<i class="text-success fa fa-level-down"></i>
+						</p>
+						<p class="text-muted">独立访客(UV)</p>
+					</div>
+					<div onclick="changeChart(2,this)" class="changemainchart col-xs-3 b-r wrapper-sm b-light hand">
+						<p class="h4 font-bold m-t">
+							<span id="sum_3"></span>&nbsp;<i class="text-danger fa fa-level-up"></i>
+						</p>
+						<p class="text-muted">登录用户数</p>
+					</div>
+					<div onclick="changeChart(3,this)" class="changemainchart col-xs-3 wrapper-sm hand">
+						<p class="h4 font-bold m-t">
+							<span id="sum_4"></span>&nbsp;<i class="text-success fa fa-level-down"></i>
+						</p>
+						<p class="text-muted">新访客数</p>
+					</div>
+				</div>
+			</footer>
+		</section>
+
+		<section class="panel panel-default">
+			<header class="panel-heading text-right bg-light ">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#aa" data-toggle="tab" columns="0,1,2,3,4,5,6,7,8,9">默认</a></li>
+					<li><a href="#aa" data-toggle="tab" columns="0,1,2,3,4,5,6,7,8">流量指标</a></li>
+					<li><a href="#aa" data-toggle="tab" columns="0,1,12,13,14,15,16">质量指标</a></li>
+				</ul>
+			</header>
+			<div class="panel-body" style="padding: 0px;">
+				<div class="tab-content">
+					<div class="tab-pane fade active in" id="aa">
+						<table class="table table-striped m-b-none table_select_row" id="tableIndex">
+							<thead>
+								<tr>
+									<th>统计日期</th>
+									<th>浏览量</th>
+									<th>独立访客数</th>
+									<th>IP数</th>
+									<th>来访次数</th>
+									<th show="false">新独立访客</th>
+									<th show="false">注册数</th>
+									<th show="false">新注册数</th>
+									<th show="false">登录数</th>
+									<th show="false">登录比</th>
+									<th show="false">平均深度</th>
+									<th show="false">平均时长</th>
+									<th show="false">停留时长</th>
+									<th show="false">平均停留时长</th>
+									<th show="false">贡献下游浏览量</th>
+									<th show="false">二跳率</th>
+									<th show="false">跳出率</th>
+									<th show="false">展现量</th>
+									<th show="false">点击量</th>
+									<th show="false">唯一点击量</th>
+									<th>点击率</th>
+									<th>唯一点击率</th>
+									<th>到达量</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="row">
+			<div class="col-md-6">
+				<section class="panel panel-default">
+					<header class="panel-heading">
+						<span class="label bg-danger pull-right m-t-xs"></span> 入口页面
+					</header>
+					<table id="table1" class="datatables table table-striped" data-ride="datatables">
+						<thead>
+							<tr>
+								<th>页面</th>
+								<th class="w-5">访问次数</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="2" class="text-center">
+									<a href="/portal/visitSource/source">查看更多</a>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</section>
+			</div>
+			<div class="col-md-6">
+				<section class="panel panel-default">
+					<header class="panel-heading">
+						<span class="label bg-success pull-right m-t-xs"></span> 访问页面
+					</header>
+					<table  class="datatables table table-striped" data-ride="datatables"id="table2">
+						<thead>
+							<tr>
+								<th >页面</th>
+								<th class="w-4">浏览量</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="2" class="text-center">
+									<a href="/portal/siteAnalysis/pageRank">查看更多</a>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</section>
+			</div>
+		</div>
+
+	</section>
+</section>
+
+</@layout>
+
+<script>
+	$("#today").text("2015-11-06");
+	var chartArray = new Array();
+
+	function changeChart(index, a) {
+		$(".changemainchart").removeClass("active");
+		$(a).addClass("active");
+		var myChart = echarts.init(document.getElementById('mainchart'),
+				'infographic');
+		// 为echarts对象加载数据
+		myChart.setOption(chartArray[index]);
+
+	}
+
+	$(document).ready(
+			function() {
+				var start = "2015-11-05";
+				var end = "2015-11-06";
+				var ajaxOption = {
+					url : window.location.href + "?start_dt=" + start+ "&end_dt=" + end,
+					success : function(data) {
+						$("#sum_1").html(data.sum_1);
+						$("#sum_2").html(data.sum_2);
+						$("#sum_3").html(data.sum_3);
+						$("#sum_4").html(data.sum_4);
+						chartArray.push($.parseJSON(data.chart1));
+						chartArray.push($.parseJSON(data.chart2));
+						chartArray.push($.parseJSON(data.chart3));
+						chartArray.push($.parseJSON(data.chart4));
+						var myChart = echarts.init(document
+								.getElementById('mainchart'), 'infographic');
+						// 为echarts对象加载数据
+						myChart.setOption(chartArray[0]);
+
+						var table = tableQuery({
+							"aaData" : data.data,
+							"id" : "#tableIndex",
+							bPaginate : false,
+							bInfo : false,
+							bFilter : false,
+							bLengthChange : false
+						});
+						$('[href="#aa"]').click(function() {
+							var columns = $(this).attr("columns").split(",");
+							for (var i = 0; i < 24; i++) {
+								var column = table.column(i);
+								column.visible(false);
+							}
+							for (var i = 0; i < columns.length; i++) {
+								var index = columns[i];
+								var column = table.column(index);
+								column.visible(true);
+							}
+						});
+						tableQuery({
+							"aaData" : data.landingPage,
+							"id" : "#table1",
+							bPaginate : false,
+							bInfo : false,
+							bFilter : false,
+							"fixedOrder" : false,
+							bLengthChange : false
+						});
+						tableQuery({
+							"aaData" : data.visitPage,
+							"id" : "#table2",
+							bPaginate : false,
+							bInfo : false,
+							bFilter : false,
+							"fixedOrder" : false,
+							bLengthChange : false
+						});
+					}
+				}
+				commonAjax(ajaxOption);
+			});
+</script>

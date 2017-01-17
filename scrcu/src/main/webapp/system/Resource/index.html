@@ -1,0 +1,75 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 系统管理</a></li>
+		<li>资源管理</li>
+	</ul>
+</div>
+<section id="content">
+	<div class="panel-head">
+		<a href="${root}/system/Resource/create/0" data-toggle="ajaxModal" class="icon-plus btn btn-sm btn-default"> 添加分组</a>  
+	</div>
+	<div id="treex" class="ztree dialogs-delegate"></div>
+</section>
+</@layout>
+<link rel="stylesheet" href="/static/js/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/static/js/ztree/js/jquery.ztree.all-3.5.min.js"></script>
+<link rel="stylesheet" href="/static/bootstrap3-dialog-master/dist/css/bootstrap-dialog.min.css" type="text/css">
+<script type="text/javascript" src="/static/bootstrap3-dialog-master/dist/js/bootstrap-dialog.min.js"></script>
+<script type="text/javascript">
+	var IDMark_Switch = "_switch", IDMark_Icon = "_ico", IDMark_Span = "_span", IDMark_Input = "_input", IDMark_Check = "_check", IDMark_Edit = "_edit", IDMark_Remove = "_remove", IDMark_Ul = "_ul", IDMark_A = "_a";
+	var setting = {
+		async : {
+			enable : true,
+			url : "${root}/system/Resource/getlist",
+			autoParam : [ "id" ],
+			type : "get"
+		},
+		view : {
+			addHoverDom : addHoverDom,
+			removeHoverDom : removeHoverDom,
+			nameIsHTML : true
+		}
+	};
+	var delNode = function(id) {
+		var treeObj = $.fn.zTree.getZTreeObj('treex');
+		var node = treeObj.getNodeByParam("id", id, null);
+		if (node == null)
+			return;
+		if (node.isParent) {
+			alert("当前节点还有子节点，无法删除！");
+			return;
+		}
+		if (!confirm("确定删除？"))
+			return;
+		$.post('${root}/system/Resource/delete/' + id, function(json) {
+			if (json.success) {
+				treeObj.removeNode(node);
+			} else {
+				alert('删除失败');
+			}
+		}, 'JSON');
+	}
+	function addHoverDom(treeId, treeNode) {
+		if (treeNode.parentNode && treeNode.parentNode.id != 1)
+			return;
+		if ($("#ext_" + treeNode.id).length > 0)
+			return;
+		var aObj = $("#" + treeNode.tId + IDMark_A);
+		Str = '<span id="ext_'+treeNode.id+'" class="tree_btns">';
+		Str += '<span  class="fa fa-plus text-blue dialogx" data-toggle="ajaxModal" href="${root}/system/Resource/create/'+treeNode.id+'"></span>';
+		Str += '<span  class="fa fa-edit text-blue dialogx" data-toggle="ajaxModal" href="${root}/system/Resource/update/'+treeNode.id+'"></span>';
+		Str += '<span  class="margin-small fa fa-trash-o text-blue" onclick="javascript:delNode('
+				+ treeNode.id + ')"></span>';
+		Str += '</span>';
+		aObj.append(Str);
+	}
+	function removeHoverDom(treeId, treeNode) {
+		//if (treeNode.parentTId && treeNode.getParentNode().id!=1) return;
+		$("#ext_" + treeNode.id).unbind().remove();
+		$("#ext_" + treeNode.id).unbind().remove();
+	}
+	$(function() {
+		$.fn.zTree.init($("#treex"), setting);
+	});
+</script>

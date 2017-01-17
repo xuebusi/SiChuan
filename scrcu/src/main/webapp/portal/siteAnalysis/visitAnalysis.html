@@ -1,0 +1,105 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>访问分析</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="portal_visitAnalysis_time"><a href="#tab" data-toggle="tab"><i
+						class="icon-calendar"
+					></i>&nbsp;访客时长</a></li>
+				<li class="csvExportTab" csvAction="portal_visitAnalysis_depth"><a href="#depth_tab" data-toggle="tab"><i
+						class="icon-screen-smartphone"
+					></i>&nbsp;访问深度</a></li>
+			</ul>
+			<span class="hidden-sm pull-right"><a href="" id="csvExport" csvAction="/csv/portal_visitAnalysis_time"
+				class=" btn btn-default btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="tab">
+					<table id="timeTable" class="datatables m-b-none noborder table table-striped " data-ride="datatables">
+						<thead>
+							<tr>
+								<th>访问时长</th>
+								<th>登录用户数</th>
+								<th>占比</th>
+								<th>浏览量（PV）</th>
+								<th>PV占比</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="depth_tab">
+					<table id="depthTable" class="datatables table table-striped " data-ride="datatables">
+						<thead>
+							<tr>
+								<th>访问深度</th>
+								<th>登录用户数</th>
+								<th>占比</th>
+								<th>浏览量（PV）</th>
+								<th>PV占比</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="clear">
+		<hr />
+	</div>
+
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				tableQuery({
+					"id" : "#depthTable",
+					"aoColumnDefs": [{
+	                      "targets": [3], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                    	  return getPercent(data);
+	                      }},{
+	                      "targets": [5], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                    	  return getPercent(data);
+	                      }
+	                }]
+				});
+				tableQuery({
+					"aaData" : data.timeData,
+					"id" : "#timeTable",
+					"aoColumnDefs": [{
+	                      "targets": [3], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                    	  return getPercent(data);
+	                      }},{
+		                      "targets": [5], // 目标列位置，下标从0开始
+		                      "render": function(data) { // 返回自定义内容
+		                    	  return getPercent(data);
+		                      }
+	                }]
+				});
+			}
+		};
+		commonAjax(ajaxOption);
+	}
+</script>

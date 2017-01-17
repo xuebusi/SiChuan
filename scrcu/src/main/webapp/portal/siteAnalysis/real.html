@@ -1,0 +1,140 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>实时流量</li>
+	</ul>
+</div>
+<section id="content">
+	<div style="margin: -20px -30px 30px -30px; background: #E0EAEC; padding-top: 20px">
+		<div id="realtimechart" style="height: 330px; margin: 0px 30px 0px 30px;"></div>
+	</div>
+
+	<section class="panel panel-default">
+		<header class="panel-heading">
+			<i class="icon-bar-chart padder-xs"></i>流量趋势
+		</header>
+		<div class="table-responsive">
+			<table id="table" class=" table table-striped ">
+				<thead>
+					<tr>
+						<th>日期</th>
+						<th>时段</th>
+						<th>分段</th>
+						<th>浏览量（PV）</th>
+						<th>访客数（UV）</th>
+						<th>IP数</th>
+						<th>来访次数</th>
+						<th>登录用户数</th>
+						<th>登录用户比</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</section>
+</section>
+
+</@layout>
+
+<script>
+	function query(flag) {
+		var ajaxOption = {
+			//url : window.location.href + "?start_dt=" + getDateStr(0),
+			url : window.location.href + "?start_dt=2015-12-01",
+			success : function(data) {
+				tableQuery({
+					"aaData" : data.data
+				});
+			}
+		};
+		commonAjax(ajaxOption);
+	}
+	$(document).ready(function() {
+		query(true);
+	});
+
+    var tenmin = 1000; 
+    var date = []; 
+    var now = new Date();  
+    function addData(shift) { 
+        var h = now.getHours(); 
+        var min = now.getMinutes(); 
+        var s = now.getSeconds(); 
+        if(h < 10) 
+            h = "0" + h; 
+        if(min < 10) 
+            min = "0" + min; 
+        if(s < 10) 
+            s = "0" + s; 
+        show = [h , min, s].join(':'); 
+        date.push(show); 
+        if (shift)
+            date.shift(); 
+        now = new Date(+new Date(now) + tenmin); 
+    }  
+    for (var i = 1; i < 60; i++) { 
+        addData(); 
+    }
+
+    realtimeoption = {
+		tooltip : {
+			trigger : 'axis'
+		},
+		toolbox : {
+			show : false
+		},
+		grid : {
+			x : 45,
+			x2 : 20,
+			y : 18,
+			y2 : 45
+		},
+		xAxis : [ {
+			type : 'category',
+			boundaryGap : false,
+			data : date
+		} ],
+		yAxis : [ {
+			type : 'value',
+			boundaryGap : [ 0.2, 0.2 ]
+		} ],
+		series : [
+
+		{
+			name : '浏览量PV',
+			type : 'line',
+			data : (function() {
+				var res = [];
+				var len = 100;
+				while (len--) {
+					res.push(Math.random() * 100 + 400);
+				}
+				return res;
+			})()
+		} ]
+	};
+	var realtimediv = document.getElementById('realtimechart');
+	if (realtimediv) {
+		var realtimeChart = echarts.init(document
+				.getElementById('realtimechart'), 'infographic');
+		// 为echarts对象加载数据
+		realtimeChart.setOption(realtimeoption);
+		timeTicket = setInterval(function() {
+		    //动态刷新x轴的数据
+            addData(true); 
+            realtimeChart.setOption({ 
+                xAxis: [ { 
+                    data : date 
+                } ]
+			});
+			// 动态数据接口 addData
+			realtimeChart.addData([ [ 0, // 系列索引
+			Math.round(Math.random() * 100 + 400), // 新增数据
+			true, // 新增数据是否从队列头部插入
+			false // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
+			] ]);
+		}, 1000);
+	}
+</script>

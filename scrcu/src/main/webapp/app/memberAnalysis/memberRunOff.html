@@ -1,0 +1,72 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+    <ul class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i>移动分析</a></li>
+        <li>会员流失</li>
+    </ul>
+</div>
+<section id="content">
+    <#include "/common/_dateQuery.html"/>
+    <section class="panel panel-default">
+        <header class="panel-heading">
+            <i class="icon-list padder-xs"></i>会员流失量 <span class="hidden-sm pull-right">
+            <a href=""csvAction="/csv/app_member_runoff" class="csvExport btn btn-default btn-sm" style="display: inline"
+        ><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+        </header>
+        <div class="table-responsive">
+            <table id="table" class="datatables table table-striped m-b-none" data-ride="datatables">
+                <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>会员流失数</th>
+                    <th>会员流失占比</th>
+                    <th>休眠会员数</th>
+                    <th>休眠会员占比</th>
+                    <th>回访用户数</th>
+                    <th>回访用户占比</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </section>
+    <div class="clear"></div>
+</section>
+</@layout>
+<script>
+    function query(flag) {
+        if (flag) {
+            $("#yesterdayButton").click();
+            return;
+        }
+        var start = $("#start_dt").val();
+        var end = $("#end_dt").val();
+        var ajaxOption = {
+            url : window.location.href + "?start_dt=" + start + "&end_dt="
+            + end,
+            success : function(data) {
+                var option = {
+                    "aaData" : data.data,
+                    "sDom" : "<'row'<'col-sm-6'l><'col-sm-6'f>r>t<'row'<'col-sm-4'i><'col-sm-8'p>>",
+                    "aoColumnDefs": [{
+                        "targets": [3], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    },{
+                        "targets": [5], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    },{
+                        "targets": [7], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    }]
+                };
+                tableQuery(option);
+            }
+        }
+        commonAjax(ajaxOption);
+    }
+</script>

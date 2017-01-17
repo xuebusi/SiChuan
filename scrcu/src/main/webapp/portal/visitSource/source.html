@@ -1,0 +1,96 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>来源统计</li>
+		<li>来源分析</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div class="panel panel-default " style="margin:0px">
+		<header class="panel-heading">
+			<i class="icon-bar-chart padder-xs"></i>来源分析 <span class="hidden-sm pull-right"><a href=""
+				csvAction="/csv/portal_sourceAnalysis_source" class="csvExport btn btn-default btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="table-responsive">
+			<table id="table1" class="datatables table table-striped m-b-none" data-ride="datatables">
+				<thead>
+					<tr>
+						<th class="w-2">来源方式</th>
+						<th class="w-7">url</th>
+						<th class="w-2">访问次数</th>
+						<th class="w-3">浏览量(PV)</th>
+						<th class="w-3">访客数(UV)</th>
+						<th class="w-2">IP数</th>
+						<th class="w-2">跳出率</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div class="clear">
+		<hr />
+	</div>
+	<div class="panel panel-default" >
+		<header class="panel-heading">
+			<i class="icon-bar-chart padder-xs"></i>入口页面 <span class="hidden-sm pull-right"><a href=""
+				csvAction="/csv/portal_siteAnalysis_entryPage_query" class="csvExport btn btn-default btn-sm"
+				style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<table id="table2" class="datatables table table-striped b-light">
+			<thead>
+				<tr>
+					<th>入口页面</th>
+					<th class="w-5">访问次数</th>
+					<th class="w-4">浏览量</th>
+					<th class="w-4">访客数</th>
+					<th class="w-4">IP</th>
+					<th class="w-4">退出率</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				tableQuery({
+					"aaData" : data.dataSource,
+					"id" : "#table1",
+					"sScrollX": "1200px",
+					"aoColumnDefs": [{
+	                    "targets": [6], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              }]
+				});
+				tableQuery({
+					"aaData" : data.dataPage,
+					"id" : "#table2",
+					"aoColumnDefs": [{
+	                    "targets": [6], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              }]
+				});
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+</script>

@@ -1,0 +1,180 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>用户画像</li>
+	</ul>
+</div>
+<style>
+
+.userTags li {
+	height: 65px !important;
+}
+</style>
+<section id="content">
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 性别和终端 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="sexDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 年代 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="generationDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear">持卡和注册年限 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="yearDiv" class="col-md-6" style="height: 240px;"></div>
+					<div id="zc_yearDiv" class="col-md-6" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 职业 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="jobDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 群体比例 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="colonyDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 使用时段 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="timeDiv" style="height: 240px;"></div>
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-sm-3">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 教育成都 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="eduDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3" style="padding-left:0px">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 搜索引擎 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="searchDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3" style="padding-left:0px">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 用户卡类别 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="cardDiv" style="height: 240px;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-3" style="padding-left:0px">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 交易类型 </header>
+				<div class="panel-body" style="padding: 0px">
+					<div id="tradeDiv" style="height: 240px;"></div>
+
+				</div>
+			</div>
+		</div>
+		<div class="clear">
+		<hr />
+	</div>
+	<div class="col-sm-12">
+			<div class="panel panel-default table-responsive">
+				<header class="panel-heading clear"> 标签 </header>
+				<div class="panel-body" >
+		<ul class="userTags clear" id="rateMap">
+		</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</section>
+</@layout>
+<script src="/static/echarts/echarts.js"></script>
+<script>
+	$(document).ready(function() {
+		var ajaxOption = {
+			url : window.location.href,
+			success : function(data) {
+				setChart("jobDiv", data.job);
+				setChart("yearDiv", data.year);
+				setChart("zc_yearDiv", data.zc_year);
+				setChart("colonyDiv", data.colony);
+				setChart("timeDiv", data.time);
+				setChart("searchDiv", data.search);
+				setChart("tradeDiv", data.trade);
+				setChart("cardDiv", data.card);
+				setChart("eduDiv", data.edu);
+				//setChart("osDiv", data.os);
+				setChart("generationDiv", data.generation);
+				setChart("sexDiv", data.sex);
+				
+				var tagMap=data.rateMap;
+		　　		var str ="";
+				$.each(tagMap, function(key, val) { 
+					str = str + '<div class="tagtype col-sm-4"><div>'+key+'</div><ul class="userTags">';
+			　　		var tags=tagMap[key]; 
+			　　		$.each(tags,function(i,tag){
+			　　			str = str + '<li name="'+tag["label_only"]+'">'+tag["label_desc"]+'<br>占比:'+tag["rate"]+'%</li>';
+			　　		});
+			　　		str = str + '</ul></div>'
+			　　	}); 
+				$("#rateMap").append(str);
+			}
+		}
+		commonAjax(ajaxOption);
+	});
+
+	function setChart(div, data) {
+		if (data != null) {
+			// 		chart = echarts.init(document.getElementById(div),
+			// 		'infographic');
+			// 		chart.setOption($.parseJSON(data));
+
+			require.config({
+				paths : {
+					'echarts' : '/static/echarts/',
+					'echarts/chart/bar' : '/static/echarts/chart/bar', //bar
+					'echarts/theme/shine' : '/static/echarts/theme/macarons' //主题
+				}
+			});
+			//使用
+			require([ 'echarts', 'echarts/theme/shine', 'echarts/chart/bar' ],
+					function(ec, theme) {
+						// 		    var myChart = ec.init(document.getElementById('educationdiv'),theme); //设置主题
+						// 		    myChart.setOption($.parseJSON(chartOption)); 
+
+						chart = echarts.init(document.getElementById(div),
+								theme);
+						chart.setOption($.parseJSON(data));
+					});
+		} else {
+			$("#" + div).remove();
+		}
+	}
+</script>

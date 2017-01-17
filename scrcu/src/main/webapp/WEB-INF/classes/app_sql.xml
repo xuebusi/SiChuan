@@ -1,0 +1,293 @@
+<sqlGroupList>
+	<!-- 活跃用户start -->
+	<sqlGroup name="app_activeUser">
+		<sql id="name">app活跃用户</sql>
+		<sql id="header">日期,启动用户数,七天启动用户数,30天启动用户数</sql>
+		<sql id="sql">select statt_dt,startover_user_cnt,last_7day_startover_user_cnt,last_30day_startover_user_cnt from hb_result_active_user_analysis_info_1</sql>
+	</sqlGroup>
+	<sqlGroup name="app_activeUser_phone">
+		<sql id="name">app活跃用户_手机维度</sql>
+		<sql id="header">日期,手机os,app版本号,启动用户数,七天启动用户数,30天启动用户数</sql>
+		<sql id="sql">select statt_dt,os,app_version,startover_user_cnt,last_7day_startover_user_cnt,last_30day_startover_user_cnt from hb_result_active_user_analysis_info_2</sql>
+	</sqlGroup>
+	<sqlGroup name="app_activeUser_channel">
+		<sql id="name">app活跃用户_渠道维度</sql>
+		<sql id="header">日期,渠道名,启动用户数,七天启动用户数,30天启动用户数</sql>
+		<sql id="sql">select statt_dt,channel_name,startover_user_cnt,last_7day_startover_user_cnt,last_30day_startover_user_cnt from hb_result_active_user_analysis_info_3</sql>
+	</sqlGroup>
+	<!-- 活跃用户end -->
+	
+	<!-- 留存用户start -->
+	<sqlGroup name="app_retainUser">
+		<sql id="name">app留存用户</sql>
+		<sql id="header">日期,新增用户数,次日留存,7日留存,30日留存数</sql>
+		<sql id="sql">select statt_dt, new_token_cnt,last_day_retn_ratio,last_7days_retn_ratio,last_30days_retn_ratio from hb_result_retained_user_analysis_info_1</sql>
+	</sqlGroup>
+	<sqlGroup name="app_retainUser_phone">
+		<sql id="name">app留存用户_手机维度</sql>
+		<sql id="header">日期,手机os,新增用户数,次日留存,7日留存,30日留存数</sql>
+		<sql id="sql">select statt_dt,os,new_token_cnt,last_day_retn_ratio,last_7days_retn_ratio,last_30days_retn_ratio from hb_result_retained_user_analysis_info_2</sql>
+	</sqlGroup>
+	<sqlGroup name="app_retainUser_channel">
+		<sql id="name">app留存用户_渠道维度</sql>
+		<sql id="header">日期,渠道名,次日留存,7日留存,30日留存数</sql>
+		<sql id="sql">select statt_dt,channel_name,new_token_cnt,last_day_retn_ratio,last_7days_retn_ratio,last_30days_retn_ratio from hb_result_retained_user_analysis_info_3</sql>
+	</sqlGroup>
+	<!-- 留存用户end -->
+	
+	<!-- 注册用户start -->
+	<sqlGroup name="app_regUser">
+		<sql id="name">app注册用户</sql>
+		<sql id="header">日期,新增用户数,注册量,占比(注册量/新增用户数)</sql>
+		<sql id="sql">select statt_dt ,new_token_cnt ,rgst_quantity ,rgst_quantity_div_new_token_cnt from hb_result_registered_user_analysis_info_1</sql>
+	</sqlGroup>
+	<sqlGroup name="app_regUser_channel">
+		<sql id="name">app注册用户_渠道维度</sql>
+		<sql id="header">日期,渠道名,新增用户数,注册量,占比(注册量/新增用户数)</sql>
+		<sql id="sql">select statt_dt ,channel_name ,new_token_cnt ,rgst_quantity ,rgst_quantity_div_rgst_quantity_sum  from hb_result_registered_user_analysis_info_2</sql>
+	</sqlGroup>
+	<sqlGroup name="app_regUser_phone">
+		<sql id="name">app注册用户_手机维度</sql>
+		<sql id="header">日期,手机,新增用户数,注册量,占比(注册量/新增用户数)</sql>
+		<sql id="sql">select statt_dt ,os ,app_version ,new_token_cnt ,rgst_quantity ,rgst_quantity_div_rgst_quantity_sum  from hb_result_registered_user_analysis_info_3</sql>
+	</sqlGroup>
+	<!-- 注册用户end -->
+	
+	<!-- 登录用户start -->
+	<sqlGroup name="app_loginUser">
+		<sql id="name">app登录用户</sql>
+		<sql id="header">日期,登录量,启动用户数,占比(登录量/启动用户数)</sql>
+		<sql id="sql">select statt_dt ,logon_user_cnt,startover_user_cnt  ,logon_user_cnt_div_startover_user_cnt  from hb_result_login_user_analysis_info_1</sql>
+	</sqlGroup>
+	<sqlGroup name="app_loginUser_channel">
+		<sql id="name">app登录用户_渠道维度</sql>
+		<sql id="header">日期,渠道名,登录量,启动用户数,占比(登录量/启动用户数)</sql>
+		<sql id="sql">select statt_dt ,channel_name ,logon_user_cnt,startover_user_cnt  ,logon_user_cnt_div_startover_user_cnt  from hb_result_login_user_analysis_info_2</sql>
+	</sqlGroup>
+	<sqlGroup name="app_loginUser_phone">
+		<sql id="name">app登录用户_手机维度</sql>
+		<sql id="header">日期,手机,登录量,启动用户数,占比(登录量/启动用户数)</sql>
+		<sql id="sql">select statt_dt ,os ,logon_user_cnt,startover_user_cnt  ,logon_user_cnt_div_startover_user_cnt from hb_result_login_user_analysis_info_3</sql>
+	</sqlGroup>
+	<!-- 登录用户end -->
+
+	<!-- 新增用户start -->
+	<sqlGroup name="app_newUser">
+		<sql id="name">app新增用户</sql>
+		<sql id="header">日期,新增用户,新增用户占比</sql>
+		<sql id="sql">select statt_dt, new_token_cnt, new_token_ratio from result_new_added_user_analysis_info_1</sql>
+	</sqlGroup>
+	<sqlGroup name="app_newUser_channel">
+		<sql id="name">app新增用户_渠道维度</sql>
+		<sql id="header">日期,渠道名,新增用户数量,占比(该渠道新增用户/所有渠道新增用户)</sql>
+		<sql id="sql">select statt_dt, channel_name, new_token_cnt, new_token_ratio from result_new_added_user_analysis_info_2</sql>
+	</sqlGroup>
+	<sqlGroup name="app_newUser_phone">
+		<sql id="name">app新增用户_手机维度</sql>
+		<sql id="header">日期,手机os,app版本号,新增用户数量,占比</sql>
+		<sql id="sql">select statt_dt, os, app_version, new_token_cnt, new_token_ratio from result_new_added_user_analysis_info_3</sql>
+	</sqlGroup>
+	<!-- 新增用户end -->
+	
+	<!-- 使用时长start -->
+	<sqlGroup name="app_useTime">
+		<sql id="name">app使用时长</sql>
+		<sql id="header">时长,启动次数,启动次数占比</sql>
+		<sql id="sql">select vist_durat ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio) from hb_result_visit_duration_info_1 SQL_CONDITION group by vist_durat</sql>
+	</sqlGroup>
+	<sqlGroup name="app_useTime_phone">
+		<sql id="name">app使用时长_手机维度</sql>
+		<sql id="header">日期,版本号,时长,启动次数,启动次数占比</sql>
+		<sql id="sql">select app_version ,vist_durat ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio) from hb_result_visit_duration_info_3 SQL_CONDITION group by app_version,vist_durat</sql>
+	</sqlGroup>
+	<sqlGroup name="app_useTime_channel">
+		<sql id="name">app使用时长_渠道维度</sql>
+		<sql id="header">渠道名,时长,启动次数,启动次数占比</sql>
+		<sql id="sql">select channel_name ,vist_durat ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio) from hb_result_visit_duration_info_2 SQL_CONDITION group by channel_name,vist_durat</sql>
+	</sqlGroup>
+	<sqlGroup name="app_useTime_os">
+		<sql id="name">手机os使用时长_渠道维度</sql>
+		<sql id="header">手机os,时长,启动次数,启动次数占比</sql>
+		<sql id="sql">select os, vist_durat, startover_cnt, startover_cnt_ratio from Result_visit_duration_Info_4</sql>
+	</sqlGroup>
+	<!-- 使用时长end -->
+	
+	<!-- 使用频率start -->
+	<sqlGroup name="app_useRate">
+		<sql id="name">app使用频率</sql>
+		<sql id="header">启动次数,用户数,用户数比例</sql>
+		<sql id="sql">select  startover_cnt ,cast(sum(user_cnt) as int) ,sum(user_cnt_ration)/count(user_cnt_ration) from hb_result_visit_frequency_info_1 SQL_CONDITION group by startover_cnt</sql>
+	</sqlGroup>
+	<sqlGroup name="app_useRate_phone">
+		<sql id="name">app使用频率_手机维度</sql>
+		<sql id="header">版本号,启动次数,用户数,用户数比例</sql>
+		<sql id="sql">select app_version  ,startover_cnt ,cast(sum(user_cnt) as int) ,sum(user_cnt_ration)/count(user_cnt_ration) from hb_result_visit_frequency_info_3 SQL_CONDITION group by app_version,startover_cnt</sql>
+	</sqlGroup>
+	<sqlGroup name="app_useRate_channel">
+		<sql id="name">app使用频率_渠道维度</sql>
+		<sql id="header">渠道名,启动次数,用户数,用户数比例</sql>
+		<sql id="sql">select  channel_name ,startover_cnt ,cast(sum(user_cnt) as int) ,sum(user_cnt_ration)/count(user_cnt_ration) from hb_result_visit_frequency_info_2 SQL_CONDITION group by channel_name,startover_cnt</sql>
+	</sqlGroup>
+	<sqlGroup name="app_useRate_os">
+		<sql id="name">手机os使用频率_渠道维度</sql>
+		<sql id="header">手机os,启动次数,用户数,用户数比例</sql>
+		<sql id="sql">select statt_dt, os, startover_cnt, user_cnt, user_cnt_ration from Result_Visit_Frequency_Info_4</sql>
+	</sqlGroup>
+	<!-- 使用频率end -->
+	
+	<!-- 访问深度start -->
+	<sqlGroup name="app_depth">
+		<sql id="name">app访问深度</sql>
+		<sql id="header">访问页面,启动次数,启动次数占比</sql>
+		<sql id="sql">select vist_url_num ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio)  from hb_result_vist_url_num_info_1 SQL_CONDITION group by vist_url_num</sql>
+	</sqlGroup>
+	<sqlGroup name="app_depth_phone">
+		<sql id="name">app访问深度_手机维度</sql>
+		<sql id="header">访问页面,启动次数,启动次数占比</sql>
+		<sql id="sql">select app_version ,vist_url_num ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio) from hb_result_vist_url_num_info_3 SQL_CONDITION group by app_version ,vist_url_num</sql>
+	</sqlGroup>
+	<sqlGroup name="app_depth_channel">
+		<sql id="name">app访问深度_渠道维度</sql>
+		<sql id="header">访问页面,启动次数,启动次数占比</sql>
+		<sql id="sql">select channel_name ,vist_url_num ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio)  from hb_result_vist_url_num_info_2 SQL_CONDITION group by channel_name ,vist_url_num</sql>
+	</sqlGroup>
+	<sqlGroup name="app_depth_os">
+		<sql id="name">手机os访问深度_渠道维度</sql>
+		<sql id="header">访问页面,启动次数,启动次数占比</sql>
+		<sql id="sql">select statt_dt, os ,vist_url_num ,startover_cnt ,startover_cnt_ratio from Result_Vist_Url_Num_Info_4</sql>
+	</sqlGroup>
+	<!-- 访问深度end -->
+	
+	<!-- 访问间隔start -->
+	<sqlGroup name="app_interval">
+		<sql id="name">app间隔分布</sql>
+		<sql id="header">使用间隔,启动次数,启动次数占比</sql>
+		<sql id="sql">select use_intrv ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio)  from hb_result_use_interval_info_1 SQL_CONDITION group by use_intrv</sql>
+	</sqlGroup>
+	<sqlGroup name="app_interval_phone">
+		<sql id="name">app间隔分布_手机维度</sql>
+		<sql id="header">手机os,使用间隔,启动次数,启动次数占比</sql>
+		<sql id="sql">select channel_name ,use_intrv ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio)  from hb_result_use_interval_info_2 SQL_CONDITION group by channel_name ,use_intrv</sql>
+	</sqlGroup>
+	<sqlGroup name="app_interval_channel">
+		<sql id="name">app间隔分布_渠道维度</sql>
+		<sql id="header">渠道名,使用间隔,启动次数,启动次数占比</sql>
+		<sql id="sql">select app_version ,use_intrv ,cast(sum(startover_cnt) as int) ,sum(startover_cnt_ratio)/count(startover_cnt_ratio) from hb_result_use_interval_info_3 SQL_CONDITION group by app_version ,use_intrv</sql>
+	</sqlGroup>
+	<sqlGroup name="app_interval_os">
+		<sql id="name">手机os间隔分布_渠道维度</sql>
+		<sql id="header">手机os,使用间隔,启动次数,启动次数占比</sql>
+		<sql id="sql">select statt_dt, os, use_intrv, startover_cnt, startover_cnt_ratio from Result_Use_Interval_Info_4</sql>
+	</sqlGroup>
+	<!-- 访问间隔end -->
+	
+	<!-- 启动次数start -->
+	<sqlGroup name="app_startCount_phone">
+		<sql id="name">app启动次数_手机维度</sql>
+		<sql id="header">日期,手机os,版本号,启动次数,启动次数占比</sql>
+		<sql id="sql">select statt_dt ,os ,app_version,startover_cnt ,startover_cnt_ratio from hb_result_start_times_analysis_info_1</sql>
+	</sqlGroup>
+	<sqlGroup name="app_startCount_channel">
+		<sql id="name">app启动次数_渠道维度</sql>
+		<sql id="header">日期,渠道名,启动次数,启动次数占比</sql>
+		<sql id="sql">select statt_dt ,channel_name ,startover_cnt ,startover_cnt_ratio  from hb_result_start_times_analysis_info_2</sql>
+	</sqlGroup>
+	<!-- 启动次数end -->
+
+	<!-- 渠道明细 -->
+	<sqlGroup name="app_channel_detail">
+		<sql id="name">渠道明细</sql>
+		<sql id="header">渠道,新增用户,启动用户,启动次数,平均单次使用时长,次日留存率,7日留存率,30日留存率</sql>
+		<sql id="sql">select
+			channel_name,cast(sum(new_token_cnt)as int),cast(sum(startover_user_cnt)as int),cast(sum(startover_cnt)as int),cast(sum(aver_vist_durat)/count(aver_vist_durat) as int),sum(last_day_retn_ratio)/count(last_day_retn_ratio),sum(last_7days_retn_ratio)/count(last_7days_retn_ratio),sum(last_30days_retn_ratio)/count(last_30days_retn_ratio)
+			from hb_result_channel_details_info SQL_CONDITION group by channel_name
+		</sql>
+	</sqlGroup>
+
+	<!-- 渠道列表-->
+	<sqlGroup name="app_channel_list">
+		<sql id="name">渠道列表</sql>
+		<sql id="header">日期,渠道名称,新增用户数,启动用户数,累计用户数 ,占比（该渠道新增用户数/所有新增用户数）,启动次数,平均单次使用时长</sql>
+		<sql id="sql">select * from Result_Channel_List_Info</sql>
+	</sqlGroup>
+	
+	<!-- 用户等级 -->
+	<sqlGroup name="app_userAnalysis_userLevel">
+		<sql id="name">用户等级</sql>
+		<sql id="header">用户等级率,数量,占比</sql>
+		<sql id="sql">select user_authentication_class,num,ratio from hb_result_user_authentication_class_report_info
+		</sql>
+	</sqlGroup>
+	
+	<!-- 版本分布 -->
+	<sqlGroup name="app_version">
+		<sql id="name">手机启动次数分布</sql>
+		<sql id="header">版本号,用户数,该版本用户数/总用户数,新增用户,启动用户,启动次数</sql>
+		<sql id="sql">select app_version ,cast(sum(user_cnt)as int) ,sum(user_cnt_div_user_cnt_sum)/count(user_cnt_div_user_cnt_sum) ,cast(sum(new_token_cnt)as int) ,cast(sum(startover_user_cnt)as int) ,cast(sum(startover_cnt)as int)  from hb_result_version_distribution_analysis_info SQL_CONDITION group by app_version 
+		</sql>
+	</sqlGroup>
+
+	<!-- 地域分布 -->
+	<sqlGroup name="app_area_query">
+		<sql id="name">APP用户地域分布</sql>
+		<sql id="header">地市,日期,新增用户,占比,启动次数,注册用户数,新注册用户数,平均访问深度</sql>
+		<sql id="sql">select city, statt_dt, new_token_cnt, sum(new_token_cnt_ratio)/count(new_token_cnt_ratio),cast(sum(startover_cnt) as int),cast(sum(user_cnt) as int),cast(sum(new_user_cnt)as int),cast(sum(aver_vist_url_num)as int) from hb_result_Regional_Distribution_Info_1 SQL_CONDITION group by city,statt_dt,new_token_cnt
+		</sql>
+	</sqlGroup>
+    <sqlGroup name="app_area_phone">
+        <sql id="name">APP用户版本地域分布</sql>
+        <sql id="header">地市,日期,新增用户,占比,启动次数,注册用户数,新注册用户数,平均访问深度</sql>
+        <sql id="sql">select city, statt_dt, new_token_cnt, sum(new_token_cnt_ratio)/count(new_token_cnt_ratio),cast(sum(startover_cnt) as int),cast(sum(user_cnt) as int),cast(sum(new_user_cnt)as int),cast(sum(aver_vist_url_num)as int) from hb_result_Regional_Distribution_Info_1 SQL_CONDITION group by city,statt_dt,new_token_cnt
+        </sql>
+    </sqlGroup>
+    <sqlGroup name="app_area_channel">
+        <sql id="name">APP用户渠道地域分布</sql>
+        <sql id="header">地市,日期,新增用户,占比,启动次数,注册用户数,新注册用户数,平均访问深度</sql>
+        <sql id="sql">select city, statt_dt, new_token_cnt, sum(new_token_cnt_ratio)/count(new_token_cnt_ratio),cast(sum(startover_cnt) as int),cast(sum(user_cnt) as int),cast(sum(new_user_cnt)as int),cast(sum(aver_vist_url_num)as int) from hb_result_Regional_Distribution_Info_1 SQL_CONDITION group by city,statt_dt,new_token_cnt
+        </sql>
+    </sqlGroup>
+    <sqlGroup name="app_area_os">
+        <sql id="name">APP用户手机os地域分布</sql>
+        <sql id="header">地市,日期,新增用户,占比,启动次数,注册用户数,新注册用户数,平均访问深度</sql>
+        <sql id="sql">select city, statt_dt, new_token_cnt, sum(new_token_cnt_ratio)/count(new_token_cnt_ratio),cast(sum(startover_cnt) as int),cast(sum(user_cnt) as int),cast(sum(new_user_cnt)as int),cast(sum(aver_vist_url_num)as int) from hb_result_Regional_Distribution_Info_1 SQL_CONDITION group by city,statt_dt,new_token_cnt
+        </sql>
+    </sqlGroup>
+
+	<!-- 会员页面start -->
+	<sqlGroup name="app_memberPage">
+		<sql id="name">app会员页面</sql>
+		<sql id="header">页面,浏览量(PV),访问次数(VV),平均页面停留时长(秒),贡献下游浏览量,跳出率,退出率</sql>
+		<sql id="sql">select url, pv, vv, avg_page_stay_durat, contr_dowst_pv, bounce_rate, exit_rate from result_mem_page_analy_info
+		</sql>
+	</sqlGroup>
+	<!-- 会员页面end -->
+
+	<!-- 会员流失start -->
+	<sqlGroup name="app_member_runoff">
+		<sql id="name">app会员流失</sql>
+		<sql id="header">会员流失数,会员流失数,会员流失数,会员流失数,会员流失数,会员流失数</sql>
+		<sql id="sql">select statt_dt, mem_run_off_cnt, mem_run_off_pct, sleep_mem_cnt, sleep_mem_pct, return_user_cnt, return_user_pct from result_run_off_analy_info</sql>
+	</sqlGroup>
+	<!-- 会员流失end -->
+
+	<!-- app事件，现阶段表格创建未完成，后期修改完善 -->
+	<!-- app事件总表 -->
+	<sqlGroup name="app_event_list">
+		<sql id="name">APP事件列表</sql>
+		<sql id="header">日期,登录用户数,事件触发次数,触发独立用户数,事件平均持续时长,事件完成次数,完成独立用户数,占比,平均完成时长,事件中断次数,中断独立用户数,占比</sql>
+		<sql id="sql">select * from Result_Event_Summary</sql>
+	</sqlGroup>
+	<!-- app事件趋势表 -->
+	<sqlGroup name="app_event_tendency">
+		<sql id="name">APP事件趋势</sql>
+		<sql id="header">事件ID,事件名称,昨日完成次数,昨日完成独立用户数,今日完成次数,今日完成独立用户数,详情</sql>
+		<sql id="sql">select * from Result_Event_Summary</sql>
+	</sqlGroup>
+	<!-- app事件详情表 -->
+	<sqlGroup name="app_event_detail">
+		<sql id="name">APP事件详情</sql>
+		<sql id="header">日期,事件名称,登录用户数,事件触发次数,事件触发独立用户数,事件平均持续时长,事件完成次数,完成独立用户数,平均完成时长,事件中断次数,中断独立用户数,步骤1完成次数,步骤1完成独立用户数,平均完成时长,转化率,步骤2完成次数,步骤2完成独立用户数,平均完成时长,转化率,步骤n完成次数,步骤n完成独立用户数,平均完成时长,转化率</sql>
+		<sql id="sql">select * from Result_Event_Summary</sql>
+	</sqlGroup>
+	
+</sqlGroupList>

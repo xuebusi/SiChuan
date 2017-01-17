@@ -1,0 +1,48 @@
+
+<input type="hidden" name="users.id" value="${(users.id)!}" />
+
+<div class="form-group">
+	<label class="col-lg-4 control-label">用户名</label>
+	<div class="col-lg-4">
+		<input class="form-control" placeholder="用户名" type="text" name="users.username" value="${(users.username)!}">
+		<span class="help-block m-b-none">${usernameMsg!}</span>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-4 control-label">密码</label>
+	<div class="col-lg-4">
+		<input class="form-control" placeholder="密码" type="password" name="users.password" value="${(users.password)!}"
+			type="password"
+		>
+		<span class="help-block m-b-none">${(passwordMsg)!}</span>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-4 control-label">角色</label>
+	<div class="col-lg-4">
+	<#list roleList as x>
+		<div class="radio i-checks">
+			<label>
+				<input name="role_id" value="${x.id}" type="radio" <#if users?? && users.role_id?? && x.id == users.role_id > checked="checked" </#if> >
+				<i></i>${x.cname}
+			</label>
+		</div>
+	</#list>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-lg-4 control-label">组织</label>
+	<div class="col-lg-4">
+		<select name="users.banklevel" class="form-control m-b">
+	<#list levels.keySet() as l>
+		    <option value="${levels.get(l)}" <#if users?? && users.banklevel?? && levels.get(l) == users.banklevel > selected="selected" </#if> >${l}</option>
+	</#list>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+	<div class="col-lg-offset-4 col-lg-10">
+		<button type="submit" class="btn btn-sm btn-default">保存</button>
+		<button type="button" onclick="window.history.back()" class="btn btn-sm btn-default">返回</button>
+	</div>
+</div>

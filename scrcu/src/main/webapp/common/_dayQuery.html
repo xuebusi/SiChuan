@@ -1,0 +1,48 @@
+<div class="col-sm-12">
+	<form action="" id="dateQueryForm" method="post">
+		<div class="form-group">
+			<div class="col-sm-2">
+				<div class="btn-group" id="dayChange">
+					<button type="button" class="btn btn-default active" onclick="todayQuery()">今天</button>
+					<button type="button" class="btn btn-default" onclick="yesterdayQuery()">昨天</button>
+				</div>
+			</div>
+			<label class="col-sm-1 control-label" style="margin-top: 8px; margin-right: -30px">日期</label>
+			<div class="col-sm-3">
+				<div class="datepicker-input input-group m-b" data-date="yyyy-mm-dd">
+					<input class="input-sm form-control datepicker-input" id="start_dt" value="${start_dt!}" name="start_dt"
+						type="text" data-date-format="yyyy-mm-dd"
+					>
+					<i class="add-on input-group-addon icon-calendar"></i>
+				</div>
+			</div>
+			<div class="col-sm-1">
+				<button type="button" class="btn btn-sm btn-primary" id="dateQuery" onclick="query()">查询</button>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="clear">
+	<hr />
+</div>
+<script>
+	var url = window.location.href;
+	var table;
+	function query() {
+		var start = $("#start_dt").val();
+		var option = {
+			"ajax" : url + "?start_dt=" + start
+		};
+		tableQuery(option);
+	}
+	$(document).ready(function() {
+		$("#dayChange .btn").click(function() {
+			$("#dayChange .btn").removeClass("active");
+			$(this).addClass("active");
+		});
+		if ($("#start_dt").val() == "") {
+			$("#start_dt").val(getDateStr(0));
+		}
+		query(true);
+	});
+</script>

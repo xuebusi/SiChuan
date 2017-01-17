@@ -1,0 +1,28 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li>自定义报表</li>
+	</ul>
+</div>
+<section id="content">
+	<div class="row m-b-lg">
+		<#list page.getList() as x>
+		<div class="col-sm-3" style="margin-bottom:30px">
+			<div class="bg-primary wrapper-md r custom-report">
+				<a href="/custom/view/${x.id}" class="text-white"> <span class="h4 m-b-xs block"><i class="icon-graph icon i-lg"></i>
+						${x.name}</span>
+					<div style="height: 40px">
+						<span class="text-muted">${x.desc}</span>
+					</div>
+		            <a href="/custom/view/${x.id}"><i class="icon-eye "></i></a>&nbsp;&nbsp;
+		            <a href="/custom/edit/${x.id}"><i class="fa  fa-edit"></i></a>&nbsp;&nbsp;
+		            <a href="/custom/delete/${x.id}"><i class="fa fa-times"></i></a>
+				</a>
+			</div>
+		</div>
+		</#list>
+	</div>
+	<a href="/custom/add" class="m-b-lg btn btn-s-md btn-primary">新增</a>
+</section>
+
+</@layout>

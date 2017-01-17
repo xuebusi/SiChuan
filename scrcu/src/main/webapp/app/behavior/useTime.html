@@ -1,0 +1,152 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i>移动分析</a></li>
+		<li>使用时长</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div id="chartDiv" style="height: 320px;"></div>
+	<div class="clear"><hr/></div>
+	
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="app_useTime"><a
+					href="#date" data-toggle="tab"><i class="icon-calendar"></i>&nbsp;使用时长分布</a>
+				</li>
+				<li class="csvExportTab" csvAction="app_useTime_phone"><a
+					href="#phone" data-toggle="tab"><i
+						class="icon-screen-smartphone"></i>&nbsp;按版本时长分布</a></li>
+				<li class="csvExportTab" csvAction="app_useTime_channel"><a
+					href="#channel" data-toggle="tab"><i
+						class="icon-equalizer text-muted"></i>&nbsp;按渠道时长分布</a></li>
+				<li class="csvExportTab" csvAction="app_useTime_os"><a
+						href="#os" data-toggle="tab"><i
+						class="icon-screen-smartphone"></i>&nbsp;按手机OS时长分布</a></li>
+			</ul>
+			<span class="hidden-sm"><a href="/csv/app_useTime"
+				id="csvExport" class="btn btn-dark btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="date">
+					<table id="table1" class="table table-striped b-light">
+						<thead>
+							<tr>
+								<th>时长</th>
+								<th>启动次数</th>
+								<th>启动次数占比</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+
+				<div class="tab-pane fade" id="phone">
+					<table id="table2" class="table table-striped b-light">
+						<thead>
+							<tr>
+								<th>版本号</th>
+								<th>时长</th>
+								<th>启动次数</th>
+								<th>启动次数占比</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="channel">
+					<table id="table3" class="table table-striped b-light">
+						<thead>
+							<tr>
+								<th>渠道名</th>
+								<th>时长</th>
+								<th>启动次数</th>
+								<th>启动次数占比</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="os">
+					<table id="table4" class="table table-striped b-light">
+						<thead>
+						<tr>
+							<th>手机OS</th>
+							<th>时长</th>
+							<th>启动次数</th>
+							<th>启动次数占比</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</@layout>
+
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#sevendayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('chartDiv'),
+						'infographic');
+				var chartOption = data.chartOption;
+				chart.setOption($.parseJSON(chartOption));
+				
+				var diffDay=dateDiff(end,start);
+				
+				tableQuery({
+					"aaData" : data.dataTime,
+					"id" : "#table1",
+					"aoColumnDefs": [{
+	                      "targets": [3], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                          return getPercent(data);
+	                      }
+	                }]
+				});
+				tableQuery({
+					"aaData" : data.dataPhone,
+					"id" : "#table2",
+					"aoColumnDefs": [{
+	                      "targets": [4], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                    	  return getPercent(data);
+	                      }
+	                }]
+				});
+				tableQuery({
+					"aaData" : data.dataChannel,
+					"id" : "#table3",
+					"aoColumnDefs": [{
+	                      "targets": [4], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                    	  return getPercent(data);
+	                      }
+	                }]
+				});
+                tableQuery({
+                    "aaData" : data.dataOs,
+                    "id" : "#table4",
+                    "aoColumnDefs": [{
+                        "targets": [4], // 目标列位置，下标从0开始
+                        "render": function(data) { // 返回自定义内容
+                            return getPercent(data);
+                        }
+                    }]
+                });
+			}
+		};
+		commonAjax(ajaxOption);
+	}
+</script>

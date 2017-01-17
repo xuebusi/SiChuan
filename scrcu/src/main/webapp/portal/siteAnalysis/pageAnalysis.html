@@ -1,0 +1,60 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>网站统计</li>
+		<li>页面分析</li>
+	</ul>
+</div>
+<section id="content">
+
+	<!-- 引入日期查询  -->
+	<#include "/common/_dateQuery.html"/>
+	
+	<section class="panel panel-default">
+		<header class="panel-heading">
+			<i class="icon-bar-chart padder-xs"></i>页面分析 <i class="fa fa-info-sign text-muted" data-toggle="tooltip"
+				data-placement="bottom" data-title="ajax to load the data."
+			></i>
+			<span class="hidden-sm pull-right"><a href="" csvAction="/csv/portal_pageAnalysis" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"
+				></i>&nbsp;导出</a></span>
+		</header>
+		<div class="table-responsive">
+			<table id="table" class="datatables table table-striped m-b-none" data-ride="datatables">
+				<thead>
+					<tr>
+						<th>网址</th>
+						<th class="w-7">浏览量（PV）</th>
+						<th class="w-7">访客数（VV）</th>
+						<th class="w-5">跳出率</th>
+						<th class="w-5">退出率</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	<div class="clear"></div>
+</section>
+</@layout>
+<script>
+	var url = window.location.href;
+	var table;
+	function query() {
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var option = {
+			"ajax" : url + "?start_dt=" + start + "&end_dt=" + end
+		};
+		tableQuery(option);
+	}
+	$(document).ready(function() {
+		$("#start_dt").val(getDateStr(0));
+		query();
+		
+		
+	});
+</script>
+

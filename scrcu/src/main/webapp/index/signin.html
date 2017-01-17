@@ -1,0 +1,90 @@
+<#include "/common/_simple_layout.html"/> <@layout>
+<style>
+.m-b-lg {
+	background-color: #fff;
+	padding: 30px 50px 0px;
+}
+
+body {
+	background-color: transparent !important;
+}
+
+.container {
+	background-color: #fff;
+	-moz-box-shadow: rgba(0, 0, 0, .3) 0 .3em .5em;
+	-webkit-box-shadow: rgba(0, 0, 0, .3) 0 .3em .5em;
+	box-shadow: rgba(0, 0, 0, .3) 0 .3em .5em;
+	border-radius: 6px;
+	padding: 0px;
+}
+
+html {
+	background: url(/static/images/bg.jpg) no-repeat;
+	background-position: center;
+}
+
+.loginlogo {
+	background-color: #545ca6;
+	padding: 20px 0px 5px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	color: #fff;
+}
+.secondtitle{
+	display:block;
+	text-align: center;
+	font-size: 12px;
+	color:#ddd;
+}
+</style>
+<section id="content" class="wrapper-md animated fadeInDownBig " style="padding-top: 120px;">
+	<div class="container aside-xl" >
+		<div class="loginlogo">
+			<span class="block font-bold h2 ">用户分析系统
+			</span>
+			 <span class="secondtitle">新一代电子银行的用户行为分析系统</span>
+		</div>
+		<section class="m-b-lg" >
+			<form method="post" action="/signin">
+				<div class="form-group">
+					<input type="text" placeholder="用户名" name="username" value="admin" class="form-control  input-lg text-center "
+						style="border: 1px solid #f1f1f1;"
+					>
+				</div>
+				<div class="form-group">
+					<input type="password" placeholder="密码" name="password" value="admin" class="form-control  input-lg text-center "
+						style="border: 1px solid #f1f1f1;"
+					>
+				</div>
+				<div style="text-align: center;">
+				<button type="submit" id="login" class="btn btn-success lt btn-block" >
+					<i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">登录</span>
+				</button>
+				</div>
+			</form>
+		</section>
+		<!-- footer -->
+		<footer id="footer">
+			<div class="text-center padder">
+				<p>
+					<small>©2015 四川省农村信用社联合社</small>
+				</p>
+			</div>
+		</footer>
+	</div>
+</section>
+<script type="text/javascript" language=JavaScript charset="UTF-8">
+	document.onkeydown = function(event) {
+		var e = event || window.event || arguments.callee.caller.arguments[0];
+		if (e && e.keyCode == 27) { // 按 Esc 
+			//要做的事情
+		}
+		if (e && e.keyCode == 113) { // 按 F2 
+			//要做的事情
+		}
+		if (e && e.keyCode == 13) { // enter 键
+			$("#login").click();
+		}
+	};
+</script>
+</@layout>

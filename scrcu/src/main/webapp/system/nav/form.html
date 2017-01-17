@@ -1,0 +1,148 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title"><#if data.isNew()>添加 <#else>编辑 </#if>资源</h4>
+		</div>
+		<form method="post" class="form-horizontal" action="" onsubmit="return ajaxSubmit();" id="AjaxForm">
+			<div class="modal-body">
+				<input type="hidden" id="sysnav_pid" name="sysnav.pid" value="${data.pid!}" />
+				<input type="hidden" id="sysnav_id" name="sysnav.id" value="${data.id!}" />
+				<input type="hidden" id="res_id" name="sysnav.res_id" value="${data.res_id!''}" />
+				<div class="form-group">
+					<label class="col-sm-2 control-label">名称</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control " id="sysres_title" name="sysnav.title" size="50" placeholder="请填写名称"
+							data-validate="required:请填写名称" value="${data.title!}"
+						/>
+					</div>
+				</div>
+				<div class="line line-dashed b-b line-lg pull-in"></div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">图标</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control " id="sysres_icon" name="sysnav.icon" size="50" placeholder="请填写图标"
+							data-validate="required:请填写图标" value="${data.icon!}"
+						/>
+					</div>
+				</div>
+				<div class="line line-dashed b-b line-lg pull-in"></div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">所属资源</label>
+					<div class="col-sm-8">
+						<div class="input-group">
+							<input type="text" class="form-control" id="res_name" size="50" readonly="readonly" placeholder="请选择">
+							<span class="input-group-btn">
+								<button class="btn btn-default" id="menuBtn" type="button" onclick="showMenu(); return false;">选择</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+				<input class="btn btn-primary" type="submit" value="提交"></input>
+			</div>
+		</form>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+<div id="menuContent" class="menuContent" style="display: none; position: absolute;">
+	<ul id="treeDemo" class="ztree" style="margin-top: 0; width: 160px;"></ul>
+</div>
+<script src="${root}/static/js/jquery.form.js"></script>
+<script>
+
+	var url;
+	var id = $("#sysnav_id").val();
+	var pid = $("#sysnav_pid").val();
+	var isnew = true;
+	if (id == null || id == "") {
+		url = "/system/nav/create/" + pid;
+	} else {
+		isnew = false;
+		url = "/system/nav/update/" + pid;
+	}
+	var ajaxSubmit = function() {
+		$('#AjaxForm').ajaxSubmit(
+				{
+					url : url,
+					dataType : "json",
+					success : function(json) {
+						if (json.success) {
+							var treeObj = $.fn.zTree.getZTreeObj('treex');
+							if (!isnew) {
+								var node = treeObj.getNodeByParam("id",
+										json.data.id, null);
+								if (node != null) {
+									node.name = json.data.name
+									treeObj.updateNode(node);
+								}
+							} else {
+								var node = treeObj.getNodeByParam("id",
+										json.data.pid, null);
+								console.log(json.data.pid);
+								treeObj.addNodes(node, json.data);
+							}
+							$('[data-dismiss="modal"]').click();
+						}
+					}
+				});
+		return false;
+	}
+	var setting = {
+			view: {
+				dblClickExpand: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onClick: onClick
+			}
+		};
+		
+		function onClick(e, treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			nodes = zTree.getSelectedNodes();
+			if (nodes.length ==1) {
+				node = nodes[0];			
+				$("#res_name").attr("value", '【'+node.name+'】');
+				$("#res_id").attr("value", node.id);
+			}
+			hideMenu();
+		}
+
+		function showMenu() {
+			var resObj = $("#res_name");
+			var cityOffset = $("#res_name").offset();
+			$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + resObj.outerHeight() + "px"}).slideDown("fast");
+			$("#menuContent .ztree").width(resObj.width());
+			$("body").bind("mousedown", onBodyDown);
+		}
+		function hideMenu() {
+			$("#menuContent").fadeOut("fast");
+			$("body").unbind("mousedown", onBodyDown);
+		}
+		function onBodyDown(event) {
+			if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+				hideMenu();
+			}
+		}
+		$(document).ready(function(){
+			$.get("${root}/system/nav/getres", function(nodes){
+				var treeObj = $.fn.zTree.init($("#treeDemo"), setting, nodes);
+				if (!isnew) {
+					var node = treeObj.getNodeByParam("id", ${data.res_id!'0'}, null);
+					if (node!=null) {
+						$("#res_name").attr("value", '【'+node.name+'】');
+						$("#res_id").attr("value", node.id);
+					}
+				}
+			},'JSON');
+		});
+
+</script>

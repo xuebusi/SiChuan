@@ -1,0 +1,134 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a><i class="fa fa-home"></i> 用户画像</a></li>
+		<li>标签墙</li>
+	</ul>
+
+</div>
+<style>
+.panel {
+	box-shadow: none;
+	border: 1px solid #eee;
+}
+
+.panel-default .panel-heading {
+	background-color: #fff !important;
+}
+
+.form-group {
+	margin-bottom: 0px;
+}
+</style>
+<section id="content">
+	<section class="vbox">
+		<section class="scrollable">
+			<div style="margin-top: 10px;" class="padder clear">
+				<form action="${root}/portrait/groupTags" class="form-horizontal" method="post">
+					<div class="form-group col-sm-12">
+						<section class="panel panel-default">
+							<header class="panel-heading" style="height: 55px; padding: 10px 0px 2px">
+								<div class="col-sm-12">
+									<div class="form-group col-sm-6">
+										<label class="col-lg-3 control-label">资产总额</label>
+										<div class="col-lg-9">
+											<div class="input-group">
+												<input type="text" name="assets_from" class="form-control">
+												<span class="input-group-btn">
+													<button class="btn btn-default" type="button"
+														style="border-left: 0px; box-shadow:none;border-right: 0px; border-color: #cbd5dd;"
+													>到</button>
+												</span>
+												<input type="text" name="assets_to" class="form-control">
+											</div>
+										</div>
+									</div>
+									<div class="form-group col-sm-6">
+										<label class="col-lg-3 control-label">负债总额</label>
+										<div class="col-sm-9">
+											<div class="input-group">
+												<input type="text" name="debt_from" class="form-control">
+												<span class="input-group-btn">
+													<button class="btn btn-default" type="button"
+														style="border-left: 0px;box-shadow:none;border-right: 0px; border-color: #cbd5dd;"
+													>到</button>
+												</span>
+												<input type="text" name="debt_to" class="form-control">
+											</div>
+										</div>
+									</div>
+								</div>
+							</header>
+							<div style="padding: 0px 10px; height: 50px">
+								<div class="col-sm-12 clear">
+									<label class="col-lg-3 control-label" style="width: 100px; padding-top: 20px; text-align: left">标签</label>
+									<div class="pagination userTags col-sm-10" id="tags" style="padding: 10px; height: 50px"></div>
+								</div>
+							</div>
+						</section>
+						<!--                         <div id="tags" class="pagination userTags" style="height:100px"></div> -->
+						<input type="hidden" name="code" id="code">
+					</div>
+
+					<input type="submit" onclick="search()" class="clear btn btn-s-md btn-default" value="检索" />
+				</form>
+			</div>
+			<hr />
+			<div id="tagList">
+				<ul class="pagination userTags clear" style="margin-top: 0px">
+					<!-- 				<#if tagMap??> -->
+					<!-- 					<#list tagMap.keySet() as type> -->
+					<!-- 						<div class="clear" style="padding: 0px 10px 10px;color:#aaa"> -->
+					<!-- 							<span>${type!}</span> -->
+					<!-- 						</div> -->
+					<!-- 						<#list tagMap.get(type) as tag> -->
+					<!-- 							<li><b>${tag.code!}</b></li> -->
+					<!-- 						</#list> -->
+					<!-- 					</#list> -->
+					<!-- 				</#if> -->
+				</ul>
+			</div>
+		</section>
+	</section>
+</section>
+
+</@layout>
+<script>
+	var tagMap;
+	$(document).ready(function() {
+		var ajaxOption = {
+			url : window.location.href,
+			success : function(data) {
+				tagMap=data.tagMap;
+				$.each(tagMap, function(key, val) { 
+					var str='<div class="tagtype col-sm-4"><div>'+key+'</div><ul class="userTags clear" style="margin-top:0px">';
+			　　		var tags=tagMap[key]; 
+			　　		$.each(tags,function(i,tag){
+			　　			str = str + '<li class="text-success" name="'+tag["label_only"]+'">'+tag["label_desc"]+'</li>';
+			　　		});
+			　　		$("#tagList").append(str + "</ul></div>");
+			　　}); 
+			$("#tagList").on("click","li:not(.disable)",function() { 
+				$(this).addClass("disable");
+				$("#tags").append($(this).prop("outerHTML"));
+			});
+			$("#tags").on("click","li",function() {
+				var name= $(this).attr("name");
+				$("#tagList li[name='"+name+"']").removeClass("disable");
+				$(this).remove();
+			});
+			
+			}
+		}
+		commonAjax(ajaxOption);
+	});
+	function search(){
+		var code="";
+		$("#tags li").each(function(){
+			code=code+$(this).attr("name")+",";
+		});
+		$("#code").val(code);
+	}
+
+	
+</script>

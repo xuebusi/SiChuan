@@ -1,0 +1,70 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><i class="fa fa-home"></i>&nbsp;移动分析</li>
+		<li>渠道列表</li>
+	</ul>
+</div>
+<section id="content">
+	<!-- 引入日期查询  -->
+	<#include "/common/_dateQuery.html"/>
+
+	<div class="panel panel-default table-responsive clear">
+		<!--<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="app_channel_list" >
+					<a href="#table1" data-toggle="tab"><i class="icon-list"></i>&nbsp;渠道列表</a>
+				</li>
+			</ul>
+			<span class="hidden-sm"><a href="/csv/app_channel_list" id="csvExport" class="btn btn-dark btn-sm" style="display: inline"
+			><i class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>-->
+		<header class="panel-heading">
+			<i class="icon-list padder-xs"></i>渠道列表
+			<span class="hidden-sm pull-right"><a href="" csvAction="/csv/app_channel_list" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"
+			></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<table id="table1" class="table table-striped b-light">
+				<thead>
+					<tr>
+						<th>日期</th>
+						<th>渠道名称</th>
+						<th>新增用户数</th>
+						<th>启动用户数</th>
+						<th>累计用户数</th>
+						<th>占比</th>
+						<th>启动次数</th>
+						<th>平均单次使用时长</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+	</div>
+
+</section>
+</@layout>
+
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#sevendayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+                tableQuery({
+                    "aaData" : data.data,
+                    "id" : "#table1"
+                });
+			}
+		};
+		commonAjax(ajaxOption);
+	}
+</script>

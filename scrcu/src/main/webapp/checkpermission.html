@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Insert title here</title>
+</head>
+<body>
+${message!}
+<@shiro.user>
+您已经登录.  <a href="/logout">退出</a>
+</@shiro.user>
+<@shiro.guest>
+<a href="/login">请登录</a>
+</@shiro.guest>
+<br>
+<br>
+<br>
+
+<@shiro.hasRole name="admin">
+role:admin.
+<br>
+addUser权限:<@shiro.hasPermission name="addUser"> true </@shiro.hasPermission><br>
+showUser权限:<@shiro.hasPermission name="showUser"> true </@shiro.hasPermission><br>
+editUser权限:<@shiro.hasPermission name="editUser"> true </@shiro.hasPermission><br>
+deleteUser权限:<@shiro.hasPermission name="deleteUser"> true </@shiro.hasPermission><br>
+</@shiro.hasRole>
+
+<br>
+<@shiro.hasRole name="user">
+role:user.
+<br>
+addUser权限:<@shiro.hasPermission name="addUser"> true </@shiro.hasPermission><br>
+showUser权限:<@shiro.hasPermission name="showUser"> true </@shiro.hasPermission><br>
+editUser权限:<@shiro.hasPermission name="editUser"> true </@shiro.hasPermission><br>
+deleteUser权限:<@shiro.hasPermission name="deleteUser"> true </@shiro.hasPermission><br>
+</@shiro.hasRole>
+<br>
+has user and admin roles: <a href="/userAdmin">check</a><br>
+has user or admin role: <a href="/userOradmin">check</a><br>
+has admin role: <a href="/admin">check</a><br>
+has user role: <a href="/user">check</a><br>
+<br>
+has addUser Permission <a href="/addUser">check</a><br>
+
+Admin: addUser showUser editUser deleteUser<br>
+User: showUser
+</body>
+</html>

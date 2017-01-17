@@ -1,0 +1,93 @@
+<sqlGroupList>
+	
+	<!-- 转账关系 条件userid和时间 -->
+	<sqlGroup name="portrait_transfer">
+		<sql id="name">转账关系</sql>
+		<sql id="header">付款人,付款人姓名,付款人性别,收款人,收款人姓名,收款人性别,交易时间,插入时间戳</sql>
+		<sql id="sql">select user_id,pay_name,pay_sex,receive_id,receive_name,receive_sex,trans_time,daily_date from hb_LABEL_TRANS_RELATION_RESULT</sql>
+	</sqlGroup>
+	
+	<!-- 人际关系明显-->
+	<sqlGroup name="portrait_relation_group">
+		<sql id="name">类别信息</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select user_id,recent_trans_name,recent_trans_time,closed_name,update_time from hb_label_trans_result</sql>
+	</sqlGroup>
+	
+	<!-- 用户画像 人际关系支出-->
+	<sqlGroup name="portrait_relation">
+		<sql id="name">人际关系</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select * from hb_label_trans_graph</sql>
+	</sqlGroup>
+	
+	<!-- 用户画像 交易曲线 -->
+	<sqlGroup name="portrait_trading">
+		<sql id="name">交易</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select daily_date,trade_thirty_count,trade_thirty_money,trade_type from hb_label_thirty_trade_summary </sql>
+	</sqlGroup>
+	
+	<!-- 用户画像 交易曲线 -->
+	<sqlGroup name="portrait_30_trading">
+		<sql id="name">交易</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select date_month,sum(trade_month_count) as tc from hb_label_threemonth_trade_summary </sql>
+	</sqlGroup>
+	
+	<!-- 用户画像 交易统计 -->
+	<sqlGroup name="portrait_trading_sum">
+		<sql id="name">交易</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select user_id,trade_thirty_count,trade_thirty_money,date_year,date_week,rank() over(order by date_year,date_week) as rownum  from hb_label_thirty_trade_summary</sql>
+	</sqlGroup>
+	
+	<!-- 用户画像 衰减金额 -->
+	<sqlGroup name="portrait_trading_money">
+		<sql id="name">交易</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select max(decay_money) as decay_money from hb_label_trade_decay </sql>
+	</sqlGroup>
+
+	<!-- 用户画像 衰减次数最大 -->
+	<sqlGroup name="portrait_trading_count">
+		<sql id="name">交易</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select max(decay_count) from hb_label_trade_decay</sql>
+	</sqlGroup>
+
+	<!-- 用户画像 衰减次数占比 -->
+	<sqlGroup name="portrait_trading_proportion">
+		<sql id="name">交易</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select sum(decay_count)from hb_label_trade_decay</sql>
+	</sqlGroup>
+	
+	
+	<!-- 用户画像  用户标签-->
+	<sqlGroup name="portal_userLabel">
+		<sql id="name">用户标签</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select * from hb_label_user_result</sql>
+	</sqlGroup>
+	
+	<sqlGroup name="label_label_grouping">
+		<sql id="name">标签表</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select max(topic_desc) as topic_desc ,topic,max(label_desc) as label_desc,label_code as label_code,max(label_only) as label_only,sum(total) as total from hb_label_labelwall_result</sql>
+	</sqlGroup>
+	
+	<sqlGroup name="label_colony_users">
+		<sql id="name">具有标签用户</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select count(*) as allusers from hb_label_user_result</sql>
+	</sqlGroup>
+	
+	<sqlGroup name="users">
+		<sql id="name">用户</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select user_id,ecif_cust_no,name,inn_org_zone_desc,inn_org_nm,assets,debt from hb_label_user_result</sql>
+	</sqlGroup>
+	
+	
+</sqlGroupList>

@@ -1,0 +1,15 @@
+<sqlGroupList>
+	<!-- 家庭关系 条件 userid -->
+	<sqlGroup name="portrait_family">
+		<sql id="name">家庭关系</sql>
+		<sql id="header">用户编号,用户名称,性别,家庭编号,家庭名称,更新时间</sql>
+		<sql id="sql">select a.user_id,a.name,a.sex,a.FAMILY_NO,a.FAMILY_name,a.update_time from LABEL_FAMILY_ACC_RELATION a left join LABEL_FAMILY_ACC_RELATION b on a.FAMILY_NO = b.FAMILY_NO </sql>
+	</sqlGroup>
+	
+	<!-- 转账关系 条件userid和时间 -->
+	<sqlGroup name="portrait_transfer">
+		<sql id="name">转账关系</sql>
+		<sql id="header">付款人,付款人姓名,付款人性别,收款人,收款人姓名,收款人性别,交易时间,插入时间戳</sql>
+		<sql id="sql">select PAY_ID,pay_name,pay_sex,RECEIVE_ID,RECEIVE_NAME,RECEIVE_SEX,TRANS_TIME,Insert_date from LABEL_TRANS</sql>
+	</sqlGroup>
+</sqlGroupList>

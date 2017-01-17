@@ -1,0 +1,178 @@
+<sqlGroupList>
+
+	<!-- 概览 -->
+	<sqlGroup name="portal_chart">
+		<sql id="name">首页图</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select statt_dt,statt_hr,pv,uv,logon_user_cnt,nuv from hb_t88_sites_indx_hour</sql>
+	</sqlGroup>
+	<sqlGroup name="portal_index">
+		<sql id="name">概览</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select Statt_Dt,cast(sum(PV)as int),cast(sum(UV)as int),cast(sum(IP_Cnt)as int),cast(sum(VV)as int),cast(sum(NUV)as int),cast(sum(User_Cnt)as int),cast(sum(New_User_Cnt)as int),
+		cast(sum(Logon_User_Cnt)as int),cast(sum(Logon_User_Vs)as int),sum(Avg_Vist_Url_Num)/count(Avg_Vist_Url_Num),sum(Avg_Vist_Durat)/count(Avg_Vist_Durat),sum(Page_Stay_Durat)/count(Page_Stay_Durat),sum(Avg_Page_Stay_Durat)/count(Avg_Page_Stay_Durat),cast(sum(Contr_dowst_PV)as int),
+		sum(Twice_Skip_Rate)/count(Twice_Skip_Rate),sum(Bounce_Rate)/count(Bounce_Rate),cast(sum(Inst_Show_Qty)as int),cast(sum(Inst_Click_Qty)as int),cast(sum(Uniq_Inst_Click_Qty)as int),sum(Inst_Click_Rate)/count(Inst_Click_Rate),sum(Uniq_Click_Rate)/count(Uniq_Click_Rate),cast(sum(Arrv_Qty)as int) from hb_T88_SITES_INDX_DAY SQL_CONDITION group by Statt_Dt</sql>
+	</sqlGroup>
+	<!-- 概览 -->
+
+	<!-- 访问页面start -->
+	<sqlGroup name="portal_visitAnalysis_time">
+		<sql id="name">页面时长</sql>
+		<sql id="header">访问时长,登录用户数,占比,浏览量（PV）,PV占比</sql>
+		<sql id="sql">select Long_vis,cast(sum(Log_Usr_Num) as int),sum(ratio)/count(ratio),cast(sum(pv) as int),sum(pv_ratio)/count(pv_ratio) from hb_Result_Access_analysis_Info_1 SQL_CONDITION group by Long_vis</sql>
+	</sqlGroup>
+	<sqlGroup name="portal_visitAnalysis_depth">
+		<sql id="name">访问深度</sql>
+		<sql id="header">访问深度,登录用户数,占比,浏览量（PV）,PV占比</sql>
+		<sql id="sql">select access_depth,cast(sum(Log_Usr_Num) as int),sum(ratio)/count(ratio),cast(sum(pv) as int),sum(pv_ratio)/count(pv_ratio) from hb_Result_Access_analysis_Info_2 SQL_CONDITION group by access_depth</sql>
+	</sqlGroup>
+	<!--访问页面end -->
+	<!-- 页面分析 start -->
+	<sqlGroup name="portal_pageAnalysis">
+		<sql id="name">页面分析</sql>
+		<sql id="header">浏览量（PV）,访客数（VV）,跳出率,退出率</sql>
+		<sql id="sql">select url,pv,uv,Bounce_Rate,Exit_rate from hb_Result_Page_analysis_Info</sql>
+	</sqlGroup>
+	<!--访页面分析 end -->
+
+	<!-- 页面排行start -->
+	<sqlGroup name="portal_pageRank">
+		<sql id="name">页面排行</sql>
+		<sql id="header">网址,浏览量,访客数,访问次数,IP数,平均停留时长,贡献浏览量,跳出率,退出率</sql>
+		<sql id="sql">select url, cast(sum(PV) as int) as pvcount,cast(sum(UV) as int), cast(sum(VV) as int), cast(sum(ip_num) as int), cast(sum(avg_page_stay_durat)/count(avg_page_stay_durat) as int), cast(sum(contr_dowst_pv) as int), sum(bounce_rate)/count(bounce_rate), sum(exit_rate)/count(exit_rate) from hb_Result_Page_Ranking_Info SQL_CONDITION group by url order by pvcount desc</sql>
+	</sqlGroup>
+	<!--页面排行end -->
+	
+	<!-- 广告趋势 start -->
+	<sqlGroup name="portal_siteAnalysis_adTrend_query">
+		<sql id="name">广告趋势</sql>
+		<sql id="header">广告名称,投放网址,展现量,点击量,唯一点击量,点击率,唯一点击率,到达量,到达率,二跳率</sql>
+		<sql id="sql">	select ad_nm,Put_URL,cast(sum(Inst_Show_Num) as int) as showcount,cast(sum(Inst_Click_Num) as int),cast(sum(Uniq_Inst_Click_Num) as int),sum(Click_ratio)/count(Click_ratio),sum(Uniq_Click_ratio)/count(Uniq_Click_ratio),cast(sum(Arrv_Num) as int),sum(Arrv_Ratio)/count(Arrv_Ratio),sum(Twice_Skip_Ratio)/count(Twice_Skip_Ratio) from hb_Result_Ad_clicks_Trend_Info SQL_CONDITION group by ad_nm,Put_URL order by showcount desc
+		</sql>
+	</sqlGroup>
+	<!--广告趋势 end -->
+	<!-- 实时趋势 start -->
+	<sqlGroup name="portal_siteAnalysis_real">
+		<sql id="name">实时趋势</sql>
+		<sql id="header"></sql>
+		<sql id="sql">select Statt_Dt,Statt_Hr,Statt_Minu,PV,UV,IP_Cnt,VV,Logon_User_Cnt,Logon_User_Vs from hb_T88_SITES_INDX_MINU SQL_CONDITION order by Statt_Dt,Statt_Hr,Statt_Minu desc
+		</sql>
+	</sqlGroup>
+	<!-- 实时趋势  end -->
+	<!-- 流量趋势 start -->
+	<sqlGroup name="portal_siteAnalysis_flowTrend">
+		<sql id="name">流量趋势</sql>
+		<sql id="header">日期,时段,浏览量(PV),访客数(UV),IP数,来访次数,新访客数,登录用户数,登录比,平均访问深度,平均时长,停留时长,平均停留时长,贡献下游浏览量,二跳率,跳出率,展现量,点击量,唯一点击量,点击率,唯一点击率,到达量</sql>
+		<sql id="sql">select Statt_Dt,Statt_Hr,PV,UV,IP_Cnt,VV,NUV,Logon_User_Cnt,Logon_User_Vs,Avg_Vist_Url_Num,Avg_Vist_Durat,Page_Stay_Durat,Avg_Page_Stay_Durat,Contr_dowst_PV,Twice_Skip_Rate,Bounce_Rate,Inst_Show_Qty,Inst_Click_Qty,Uniq_Inst_Click_Qty,Inst_Click_Rate,Uniq_Click_Rate,Arrv_Qty from hb_t88_sites_indx_hour
+		</sql>
+	</sqlGroup>
+	<sqlGroup name="portal_siteAnalysis_flowTrend_chart"> 
+		<sql id="name">流量趋势</sql> 
+		<sql id="header">日期,浏览量(PV),访客数(UV),IP数,登录用户数</sql> 
+		<sql id="sql">select Statt_Dt,cast(sum(PV) as int),cast(sum(UV) as int),cast(sum(IP_Cnt) as int),cast(sum(Logon_User_Cnt) as int) from hb_t88_sites_indx_hour SQL_CONDITION group by Statt_Dt
+		</sql>
+	</sqlGroup>
+	<!-- 流量趋势  end -->
+	<!-- 地域分布  start -->
+	<sqlGroup name="portal_siteAnalysis_area_query">
+		<sql id="name">地域分布</sql>
+		<sql id="header">城市,访客,UV占比,PV,VV,IP数,新访客,新访客/访客数,平均访问深度,登录,登录/访客数,注册用户数,注册用户数/访客数</sql>
+		<sql id="sql">select city,cast(sum(uv) as int),sum(uv_ratio)/count(uv_ratio),cast(sum(pv) as int),cast(sum(vv) as int),cast(sum(ip_num) as int),cast(sum(New_Vis_Num) as int),cast(sum(new_vis_num_div_uv) as int),cast(sum(Aver_access_depth) as int),cast(sum(Log_Usr_Num) as int),cast(sum(log_usr_num_div_uv) as int),cast(sum(Rgst_Usr_Num) as int),cast(sum(Rgst_usr_num_Div_uv) as int) from hb_Result_visitor_area_Info SQL_CONDITION group by city
+		</sql>
+	</sqlGroup>
+	<!--地域分布  end -->
+	
+	<!-- 用户等级 start -->
+	<sqlGroup name="portal_userAnalysis_userLevel">
+		<sql id="name">用户等级</sql>
+		<sql id="header">用户等级,数量,占比</sql>
+		<sql id="sql">select User_authentication_class,cast(sum(num) as int),sum(ratio)/count(ratio) from hb_Result_User_authentication_class_definition_Info SQL_CONDITION group by User_authentication_class</sql>
+	</sqlGroup>
+	<!--用户等级   end -->
+	
+	<sqlGroup name="portal_terminal_os">
+		<sql id="name">操作系统占比</sql>
+		<sql id="header">操作系统,访问次数VV,浏览量,浏览量占比,访客数UV,UV占比,IP数</sql>
+		<sql id="sql">select os,cast(sum(vv) as int),cast(sum(pv) as int),sum(Bro_vol_ratio)/count(Bro_vol_ratio),cast(sum(uv) as int),sum(uv_ratio)/count(uv_ratio),cast(sum(ip_num) as int) from hb_Result_Terminal_details_Info_2 SQL_CONDITION group by os</sql>
+	</sqlGroup>
+	<sqlGroup name="portal_terminal_browserDiv">
+		<sql id="name">浏览器占比</sql>
+		<sql id="header">浏览器,访问次数VV,浏览量,浏览量占比,访客数UV,UV占比,IP数</sql>
+		<sql id="sql">select browser,cast(sum(vv) as int),cast(sum(pv) as int),sum(Bro_vol_ratio)/count(Bro_vol_ratio),cast(sum(uv) as int),sum(uv_ratio)/count(uv_ratio),cast(sum(ip_num) as int) from hb_Result_Terminal_details_Info_3 SQL_CONDITION group by browser</sql>
+	</sqlGroup>
+	<!--终端类型    end -->
+	
+	<!--会员页面分析 start -->
+	<sqlGroup name="portal_siteAnalysis_userVisitPage_query">
+		<sql id="name">会员页面</sql>
+		<sql id="header">浏览量（PV）,访问次数(VV),平均页面停留时长(秒),贡献下游浏览量,跳出率,退出率</sql>
+		<sql id="sql">select url,cast(sum(PV) as int) as pvcount,cast(sum(VV) as int),cast(sum(avg_page_stay_durat)/count(avg_page_stay_durat) as int),cast(sum(contr_dowst_pv) as int),sum(Bounce_Rate)/count(Bounce_Rate),sum(Exit_rate)/count(Exit_rate) from hb_result_Mem_Page_Analy_Info SQL_CONDITION group by url order by pvcount desc
+		</sql>
+	</sqlGroup>
+	<!--会员页面分析   end -->
+	<!--会员流失分析 start -->
+	<sqlGroup name="portal_siteAnalysis_userLoss_query">
+		<sql id="name">会员流失分析</sql>
+		<sql id="header">会员流失数,会员流失占比,休眠会员数,休眠会员占比,回访用户数,回访用户占比</sql>
+		<sql id="sql">select Statt_Dt,Mem_Run_Off_Cnt,Mem_Run_Off_Pct,Sleep_Mem_Cnt,Sleep_Mem_Pct,Return_User_Cnt,Return_User_Pct from hb_result_Run_Off_Analy_Info</sql>
+	</sqlGroup>
+	<!--会员流失分析  end -->
+
+	<!--唯一用户分析 -->
+	<sqlGroup name="portal_userAnalysis_userOnly">
+		<sql id="name">唯一用户分析</sql>
+		<sql id="header">日期,访客数,登录用户数,IP数</sql>
+		<sql id="sql">select * from result_user_analysis_user_only_info</sql>
+	</sqlGroup>
+	
+	<!--来源分析 start -->
+	<sqlGroup name="portal_sourceAnalysis_source">
+		<sql id="name">来源分析</sql>
+		<sql id="header">来源方式,访问次数,浏览量（PV）,访客数（UV）,IP数,跳出率</sql>
+		<sql id="sql">select Src_Mod_Cd,url,cast(sum(vv)as int),cast(sum(pv)as int),cast(sum(uv)as int),cast(sum(IP_num)as int),sum(Bounce_Rate)/count(Bounce_Rate) from hb_Result_Source_analysis_Info SQL_CONDITION group by Src_Mod_Cd,url</sql>
+	</sqlGroup>
+	<!--来源分析  end -->
+	
+	<!--入口页面分析  start -->
+	<sqlGroup name="portal_siteAnalysis_entryPage_query">
+		<sql id="name">入口页面分析</sql>
+		<sql id="header">入口页面,访问次数(VV),浏览量(PV),访客数(UV),IP数,跳出率</sql>
+		<sql id="sql">select Ent_Page,cast(sum(VV)as int),cast(sum(PV)as int),cast(sum(UV)as int),cast(sum(Ip_Num)as int),sum(Bounce_Rate)/count(Bounce_Rate) from hb_result_ent_page_info SQL_CONDITION group by Ent_Page</sql>
+	</sqlGroup>
+	<!--入口页面分析   end -->
+	
+	<!--搜索引擎分析  start -->
+	<sqlGroup name="portal_sourceAnalysis_searchEngine">
+		<sql id="name">搜索引擎分析</sql>
+		<sql id="header">搜素引擎,访问次数,浏览量（PV）,访客数（UV）,IP数,浏览占比,新访客数</sql>
+		<sql id="sql">select Search_engine,cast(sum(vv)as int),cast(sum(pv)as int),cast(sum(uv)as int),cast(sum(ip_num)as int),sum(Bro_vol_ratio)/count(Bro_vol_ratio),cast(sum(New_Vis_Num)as int) from hb_Result_Search_engine_Info SQL_CONDITION group by Search_engine</sql>
+	</sqlGroup>
+	<!--搜索引擎分析   end -->
+	<!--搜索引擎分析  start -->
+	<sqlGroup name="business_analysis">
+		<sql id="name">业务分析</sql>
+		<sql id="header">日期	,UV,登录用户数,交易户数,交易笔数,动账交易户数,动账交易笔数,交易转化率,交易金额,户均交易额,笔均交易额</sql><sql id="sql">select 1,2,3,4,5,6,7,8,9,10,11 from hb_result_biz_data_analy</sql>
+	</sqlGroup>
+	<!--搜索引擎分析   end -->
+
+	<!--事件统计 start -->
+	<sqlGroup name="portal_eventAnalysis_list">
+		<sql id="name">事件列表</sql>
+		<sql id="header">日期,登录用户数,事件触发次数,触发独立用户数,事件平均持续时长,事件完成次数,完成独立用户数,占比,平均完成时长,事件中断次数,中断独立用户数,占比</sql>
+		<sql id="sql">select * from result_event_summary</sql>
+	</sqlGroup>
+
+	<sqlGroup name="portal_eventAnalysis_detail">
+		<sql id="name">事件详情</sql>
+		<sql id="header">事件ID,事件名称,昨日完成次数,昨日完成独立用户数,今日完成次数,今日完成独立用户数</sql>
+		<sql id="sql">select * from result_event_summary</sql>
+	</sqlGroup>
+
+	<sqlGroup name="portal_eventAnalysis_tendency">
+		<sql id="name">事件趋势</sql>
+		<sql id="header">日期,事件名称,登录用户数,事件触发次数,事件触发独立用户数,事件平均持续时长,事件完成次数,完成独立用户数,平均完成时长,事件中断次数,中断独立用户数,步骤1完成次数,步骤1完成独立用户数,平均完成时长,转化率,步骤2完成次数,步骤2完成独立用户数,平均完成时长,转化率,步骤n完成次数,步骤n完成独立用户数,平均完成时长,转化率</sql>
+		<sql id="sql">select * from result_event_summary</sql>
+	</sqlGroup>
+	<!--事件统计 end -->
+
+</sqlGroupList>

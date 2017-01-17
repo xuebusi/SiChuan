@@ -1,0 +1,63 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>用户统计</li>
+		<li>用户等级</li>
+	</ul>
+</div>
+<section id="content">
+
+	<#include "/common/_dateQuery.html"/>
+
+	<div class="panel panel-default table-responsive clear" style="margin-bottom: 0px">
+		<div class="col-sm-8" style="padding: 0px;">
+			<div id="chartDiv" style="height: 280px; border-right: 1px solid #EAEEF1"></div>
+		</div>
+		<div class="col-sm-4 panel panel-default" style="padding: 0px; margin-bottom: 0px; border: 0px;">
+			<header class="panel-heading">
+				<i class="icon-bar-chart padder-xs"></i>用户认证等级
+				<span class="hidden-sm pull-right"><a href="" csvAction="/csv/app_userAnalysis_userLevel" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"
+				></i>&nbsp;导出</a></span>
+			</header>
+			<table id="table" class="table table-striped b-light noborder">
+				<thead>
+					<tr>
+						<th class="aglin-center">用户等级</th>
+						<th class="aglin-center">数量</th>
+						<th class="aglin-center">占比</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div class="clear"></div>
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('chartDiv'),
+						'infographic');
+				var chartOption = data.chartOption;
+				chart.setOption($.parseJSON(chartOption));
+				var d = data.data;
+				var option = {
+					"aaData" : d,
+					bPaginate : false,
+					bInfo : false,
+					bFilter : false,
+					bLengthChange : false,
+				};
+				tableQuery(option);
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+</script>

@@ -1,0 +1,63 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i>移动分析</a></li>
+		<li>版本分布</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div class="panel panel-default table-responsive clear">
+		<div class="col-sm-12 panel panel-default" style="padding: 0px; margin-bottom: 0px; border: 0px;">
+			<header class="panel-heading">
+				<i class="icon-bar-chart padder-xs"></i>按手机版本分布
+				<span class="hidden-sm pull-right"><a href="" csvAction="/csv/app_version" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"
+				></i>&nbsp;导出</a></span>
+			</header>
+			<div class="panel-body" style="padding: 0px">
+				<table id="table1" class="table table-striped b-light">
+				<thead>
+					<tr>
+						<th>版本号</th>
+						<th>用户数</th>
+						<th>该版本用户数/总用户数</th>
+						<th>新增用户</th>
+						<th>启动用户</th>
+						<th>启动次数</th>
+					</tr>
+				</thead>
+			</table>
+			</div>
+		</div>
+	</div>
+</section>
+</@layout>
+<script>
+function query(flag) {
+	if (flag) {
+		$("#yesterdayButton").click();
+		return;
+	}
+	var start = $("#start_dt").val();
+	var end = $("#end_dt").val();
+	var ajaxOption = {
+		url : window.location.href + "?start_dt=" + start + "&end_dt="
+				+ end,
+		success : function(data) {
+			var option = {
+				"aaData" : data.data,
+                "id" : "#table1",
+				"aoColumnDefs": [{
+                    "targets": [3], // 目标列位置，下标从0开始
+                    "render": function(data) { // 返回自定义内容
+                  	  return getPercent(data);
+                    }
+              }]
+			};
+			tableQuery(option);
+		}
+	};
+	commonAjax(ajaxOption);
+}
+</script>

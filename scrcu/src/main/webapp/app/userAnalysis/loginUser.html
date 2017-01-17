@@ -1,0 +1,126 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i>移动分析</a></li>
+		<li>登录用户分析</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<div id="chartDiv" style="height: 320px;"></div>
+	<div class="clear"><hr/></div>
+	
+	<div class="panel panel-default table-responsive clear">
+		<header class="noborder panel-heading text-right bg-light clear">
+			<ul class="nav nav-tabs pull-left clear">
+				<li class="active csvExportTab" csvAction="app_loginUser"><a
+					href="#date" data-toggle="tab"><i class="icon-calendar"></i>&nbsp;登录分布</a>
+				</li>
+				<li class="csvExportTab" csvAction="app_loginUser_channel"><a
+					href="#channel" data-toggle="tab"><i
+						class="icon-screen-smartphone"></i>&nbsp;按渠道登录分布</a></li>
+				<li class="csvExportTab" csvAction="app_loginUser_retain"><a
+					href="#phone" data-toggle="tab"><i
+						class="icon-equalizer text-muted"></i>&nbsp;按手机登录分布</a></li>
+			</ul>
+			<span class="hidden-sm"><a href="/csv/app_loginUser"
+				id="csvExport" class="btn btn-dark btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body" style="padding: 0px">
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="date">
+					<table id="table1" class="table table-striped b-light">
+						<thead>
+							<tr>
+								<th>日期</th>
+								<th>登录量</th>
+								<th>启动用户数</th>
+								<th>占比(登录量/启动用户数)</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+
+				<div class="tab-pane fade" id="channel">
+					<table id="table2" class="table table-striped b-light">
+						<thead>
+							<tr>
+								<th>日期</th>
+								<th>渠道名</th>
+								<th>启动用户数</th>
+								<th>登录量</th>
+								<th>占比(登录量/启动用户数)</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="phone">
+					<table id="table3" class="table table-striped b-light">
+						<thead>
+							<tr>
+								<th>日期</th>
+								<th>手机OS</th>
+								<th>启动用户数</th>
+								<th>登录量</th>
+								<th>占比(登录量/启动用户数)</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#sevendayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('chartDiv'),
+						'infographic');
+				var chartOption = data.chartOption;
+				chart.setOption($.parseJSON(chartOption));
+				tableQuery({
+					"aaData" : data.dataTime,
+					"id" : "#table1",
+					"aoColumnDefs": [{
+	                      "targets": [4], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                          return getPercent(data);
+	                      }
+	                  }]
+				});
+				tableQuery({
+					"aaData" : data.dataChannel,
+					"id" : "#table2",
+					"aoColumnDefs": [{
+	                      "targets": [5], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                          return getPercent(data);
+	                      }
+	                  }]
+				});
+				tableQuery({
+					"aaData" : data.dataPhone,
+					"id" : "#table3",
+					"aoColumnDefs": [{
+	                      "targets": [5], // 目标列位置，下标从0开始
+	                      "render": function(data) { // 返回自定义内容
+	                          return getPercent(data);
+	                      }
+	                  }]
+				});
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+</script>

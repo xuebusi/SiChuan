@@ -1,0 +1,179 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a><i class="fa fa-home"></i> 用户画像</a></li>
+		<li>群体用户列表</li>
+	</ul>
+</div>
+<style>
+.control-label {
+	margin-top: 8px;
+	padding-right: 0px;
+}
+</style>
+<section id="content">
+	<form action="" id="dateQueryForm" method="post">
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">用户编号</label>
+			<div class="col-lg-9">
+				<input type="text" name="user_id" class="form-control" placeholder="用户编号">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">证件号</label>
+			<div class="col-lg-9">
+				<input type="text" name="cert_no" class="form-control" placeholder="证件号">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">银行卡号</label>
+			<div class="col-lg-9">
+				<input type="text" name="acct_no" class="form-control" placeholder="银行卡号">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">姓名</label>
+			<div class="col-lg-9">
+				<input type="text" name="name" class="form-control" placeholder="姓名">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">客户号</label>
+			<div class="col-lg-9">
+				<input type="text" name="ecif_cust_no" class="form-control" placeholder="客户号">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">手机号</label>
+			<div class="col-lg-9">
+				<input type="text" name="mobile" class="form-control" placeholder="手机号">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">机构</label>
+			<div class="col-lg-9">
+				<input type="text" name="inn_org_nm" class="form-control" placeholder="机构">
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">资产总额</label>
+			<div class="col-lg-9">
+				<div class="input-group">
+					<input type="text" name="assets_from" class="form-control">
+					<span class="input-group-btn"> <label class="btn btn-default"
+							style="box-shadow: none; border-left: 0px; border-right: 0px; border-color: #cbd5dd;"
+						>到</label>
+					</span>
+					<input type="text" name="assets_to" class="form-control">
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-4">
+			<label class="col-lg-3 control-label">负债总额</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<input type="text" name="debt_from" class="form-control">
+					<span class="input-group-btn"> <label class="btn btn-default"
+							style="box-shadow: none; border-left: 0px; border-right: 0px; border-color: #cbd5dd;"
+						>到</label>
+					</span>
+					<input type="text" name="debt_to" class="form-control">
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="code" id="code" value="${code!}">
+		<div class="col-sm-12">
+			<label class="col-sm-1 control-label" >标签</label>
+			<div class="col-sm-11" style="padding-left: 10px;">
+				<div class="pagination userTags col-sm-9" id="tags" style="padding: 10px; height: 50px;padding-left: 0px;">
+					<#if tagList??> <#list tagList as tagMap> <#if tagMap??>
+					<li><b>${tagMap.get("label_desc")!}</b></li> </#if> </#list> </#if>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="col-lg-3">
+				<button type="button" class="btn btn-sm btn-primary" id="dateQuery" onclick="query()">查询</button>
+			</div>
+		</div>
+	</form>
+	<div class="clear">
+		<hr />
+	</div>
+	<div class="panel panel-default table-responsive clear" style="border-top: 0px">
+		<table id="table" class="datatables table table-striped " data-ride="datatables">
+			<thead>
+				<tr>
+					<th>用户编号</th>
+					<th>ECIF客户号</th>
+					<th class="w-3">姓名</th>
+					<th class="w-4">注册地区</th>
+					<th>所属机构</th>
+					<th>资产</th>
+					<th>负债</th>
+					<th class="w-2">画像</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</section>
+</@layout>
+<script>
+	$(document).ready(function() {
+		var code=$("#code").val();
+		if (code != null && code != '') {
+			query();
+		}
+	});
+
+	function query() {
+		var d = {};
+		var str = "";
+		$("#dateQueryForm").find('input').each(
+				function() {
+					if (this.value != null && this.value != '') {
+						if (this.name == 'assets_from'
+								|| this.name == 'debt_from') {
+							var c = " and " + this.name.replace("_from", "")
+									+ ">" + this.value + "";
+							str = str + c;
+						} else if (this.name == 'assets_to'
+								|| this.name == 'debt_to') {
+							var c = " and " + this.name.replace("_to", "")
+									+ "<" + this.value + "";
+							str = str + c;
+						} else if (this.name == 'code') {
+							codes = this.value.split(",");
+							for (i = 0; i < codes.length; i++) {
+								if (codes[i] != null && codes[i] != '') {
+									var c = " and " + codes[i] + "=" + 1 + "";
+									str = str + c;
+								}
+							}
+						} else {
+							var c = " and " + this.name + "='" + this.value
+									+ "'";
+							str = str + c;
+						}
+					}
+				});
+		if (str != "")
+			str = str.substr(4);
+		var ajaxOption = {
+			url : "/portrait/userSearch",
+			data : {
+				data : str
+			},
+			type : "post",
+			success : function(data) {
+				tableQuery({
+					"aaData" : data.data,
+					"id" : "#table"
+				});
+			}
+		}
+		commonAjax(ajaxOption);
+	};
+</script>

@@ -1,0 +1,68 @@
+<#include "/common/_layout.html"/> <@layout>
+<div class="top">
+	<ul class="breadcrumb">
+		<li><a href="#"><i class="fa fa-home"></i> 首页</a></li>
+		<li>搜索引擎</li>
+	</ul>
+</div>
+<section id="content">
+	<#include "/common/_dateQuery.html"/>
+	<section class="panel panel-default">
+		<header class="panel-heading font-bold">搜索引擎
+		<span class="hidden-sm pull-right"><a href="" csvAction="/csv/portal_sourceAnalysis_searchEngine" class="csvExport btn btn-default btn-sm" style="display: inline"><i
+					class="fa fa-cloud-download"
+				></i>&nbsp;导出</a></span>
+		</header>
+		<div class="panel-body">
+			<div id="chartDiv" style="height: 180px"></div>
+		</div>
+		<div class="table-responsive">
+
+			<table id="table" class="table table-striped b-t b-light">
+				<thead>
+					<tr>
+						<th>搜素引擎</th>
+						<th>访问次数</th>
+						<th>浏览量（PV）</th>
+						<th>访客数（UV）</th>
+						<th>IP数</th>
+						<th>浏览占比</th>
+						<th>新访客数</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</section>
+</section>
+</@layout>
+<script>
+	function query(flag) {
+		if (flag) {
+			$("#yesterdayButton").click();
+			return;
+		}
+		var start = $("#start_dt").val();
+		var end = $("#end_dt").val();
+		var ajaxOption = {
+			url : window.location.href + "?start_dt=" + start + "&end_dt="
+					+ end,
+			success : function(data) {
+				var chart = echarts.init(document.getElementById('chartDiv'),
+						'infographic');
+				var chartOption = data.chartOption;
+				chart.setOption($.parseJSON(chartOption));
+				var option = {
+					"aaData" : data.data,
+					"aoColumnDefs": [{
+	                    "targets": [6], // 目标列位置，下标从0开始
+	                    "render": function(data) { // 返回自定义内容
+	                  	  return getPercent(data);
+	                    }
+	              }]
+				};
+				tableQuery(option);
+			}
+		}
+		commonAjax(ajaxOption);
+	}
+</script>
