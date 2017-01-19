@@ -66,6 +66,12 @@
 		<sql id="sql">select Statt_Dt,Statt_Hr,PV,UV,IP_Cnt,VV,NUV,Logon_User_Cnt,Logon_User_Vs,Avg_Vist_Url_Num,Avg_Vist_Durat,Page_Stay_Durat,Avg_Page_Stay_Durat,Contr_dowst_PV,Twice_Skip_Rate,Bounce_Rate,Inst_Show_Qty,Inst_Click_Qty,Uniq_Inst_Click_Qty,Inst_Click_Rate,Uniq_Click_Rate,Arrv_Qty from hb_t88_sites_indx_hour
 		</sql>
 	</sqlGroup>
+	<sqlGroup name="portal_siteAnalysis_flowTrend_chart"> 
+		<sql id="name">流量趋势</sql> 
+		<sql id="header">日期,浏览量(PV),访客数(UV),IP数,登录用户数</sql> 
+		<sql id="sql">select Statt_Dt,cast(sum(PV) as int),cast(sum(UV) as int),cast(sum(IP_Cnt) as int),cast(sum(Logon_User_Cnt) as int) from hb_t88_sites_indx_hour SQL_CONDITION group by Statt_Dt
+		</sql>
+	</sqlGroup>
 	<!-- 流量趋势  end -->
 	<!-- 地域分布  start -->
 	<sqlGroup name="portal_siteAnalysis_area_query">
@@ -123,7 +129,7 @@
 	<sqlGroup name="portal_sourceAnalysis_source">
 		<sql id="name">来源分析</sql>
 		<sql id="header">来源方式,访问次数,浏览量（PV）,访客数（UV）,IP数,跳出率</sql>
-		<sql id="sql">select Src_Mod_Cd,cast(sum(vv)as int),cast(sum(pv)as int),cast(sum(uv)as int),cast(sum(IP_num)as int),sum(Bounce_Rate)/count(Bounce_Rate) from hb_Result_Source_analysis_Info SQL_CONDITION group by Src_Mod_Cd</sql>
+		<sql id="sql">select Src_Mod_Cd,url,cast(sum(vv)as int),cast(sum(pv)as int),cast(sum(uv)as int),cast(sum(IP_num)as int),sum(Bounce_Rate)/count(Bounce_Rate) from hb_Result_Source_analysis_Info SQL_CONDITION group by Src_Mod_Cd,url</sql>
 	</sqlGroup>
 	<!--来源分析  end -->
 	

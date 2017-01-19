@@ -18,7 +18,7 @@
 	<sqlGroup name="portrait_relation">
 		<sql id="name">人际关系</sql>
 		<sql id="header"></sql>
-		<sql id="sql">select * from hb_label_trans_graph</sql>
+		<sql id="sql">select user_id,pay_name,receive_id,receive_name,total_amt,total_count,update_date from hb_label_trans_graph</sql>
 	</sqlGroup>
 	
 	<!-- 用户画像 交易曲线 -->
@@ -62,13 +62,13 @@
 		<sql id="header"></sql>
 		<sql id="sql">select sum(decay_count)from hb_label_trade_decay</sql>
 	</sqlGroup>
-
+	
+	
 	<!-- 用户画像  用户标签-->
 	<sqlGroup name="portal_userLabel">
 		<sql id="name">用户标签</sql>
 		<sql id="header"></sql>
-		<!--<sql id="sql">select rowkey.user_id,ecif_cust_no,mobile,branch_id,inn_org_nm,inn_org_sht_nm,inn_org_zone_cd,inn_org_zone_desc,inn_org_lvl_cd,org_lvl_nm,cert_no,name,acct_no,sex,marriage,age,birthday,generation,constellation,job,industry,ck_year,zc_year,ass_grade,assets,debt,user_id,daily_date,date_year,date_week,generation_80s,generation_90s,org_zone_20,org_zone_21,org_zone_03,colony_1,org_zone_04,industry_a,org_zone_05,user_cert_level_low,generation_others,colony_3,org_zone_06,org_zone_07,colony_5,org_zone_08,org_zone_09,xz_sheshou,industry_j,sex_woman,social_security_card,golden_card,user_cert_level_high,ck_year_others,industry_o,xz_tianping,zc_others,terminal_pc,zc_1_3,xz_chunv,xz_juxie,ordinary_card,whitegold_card,xz_shizi,zc_3_5,hy_20,hy_21,xz_baiyang,hy_40,hy_22,xz_shuangyu,org_zone_10,org_zone_11,sex_man,org_zone_12,org_zone_13,zc_1,ass_grade_1,security_uk_type,ass_grade_2,org_zone_15,ass_grade_3,org_zone_16,org_zone_17,org_zone_18,citizen_card,job_1,org_zone_19,edu_college_above,generation_50b,job_2,job_3,ck_year_1_3,job_4,searchengine_baidu,use_time_01,college_others,job_5,ck_year_5_10,risk_level_3,xz_jinniu from hb_label_user_result</sql>-->
-		<sql id="sql">select rowkey.user_id,ecif_cust_no,mobile,branch_id,inn_org_nm,inn_org_sht_nm,inn_org_zone_cd,inn_org_zone_desc,inn_org_lvl_cd,org_lvl_nm,cert_no,name,acct_no,sex,marriage,age,birthday,generation,constellation,job,industry,ck_year,zc_year,ass_grade,assets,debt,user_id,daily_date,date_year,date_week,generation_80s,generation_90s,org_zone_20,org_zone_21,org_zone_03,colony_1,org_zone_04,industry_a,org_zone_05,user_cert_level_low,generation_others,colony_3,org_zone_06,org_zone_07,colony_5,org_zone_08,org_zone_09,xz_sheshou,industry_j,sex_woman,social_security_card,golden_card,user_cert_level_high,ck_year_others,industry_o,xz_tianping,zc_others,terminal_pc,zc_1_3,xz_chunv,xz_juxie,ordinary_card,whitegold_card,xz_shizi,zc_3_5,hy_20,hy_21,xz_baiyang,hy_40,hy_22,xz_shuangyu,org_zone_10,org_zone_11,sex_man,org_zone_12,org_zone_13,zc_1,ass_grade_1,security_uk_type,ass_grade_2,org_zone_15,ass_grade_3,org_zone_16,org_zone_17,org_zone_18,citizen_card,job_1,org_zone_19,edu_college_above,generation_50b,job_2,job_3,ck_year_1_3,job_4,searchengine_baidu,use_time_01,college_others,job_5,ck_year_5_10,risk_level_3,xz_jinniu from hb_label_user_result</sql>
+		<sql id="sql">select ecif_cust_no,mobile,branch_id,inn_org_nm,inn_org_sht_nm,inn_org_zone_cd,inn_org_zone_desc,inn_org_lvl_cd,org_lvl_nm,cert_no,name,acct_no,sex,marriage,age,birthday,generation,constellation,job,industry,ck_year,zc_year,ass_grade,assets,debt,user_id,daily_date,date_year,date_week,generation_80s,generation_90s,org_zone_20,org_zone_21,org_zone_03,colony_1,org_zone_04,industry_a,org_zone_05,user_cert_level_low,generation_others,colony_3,org_zone_06,org_zone_07,colony_5,org_zone_08,org_zone_09,xz_sheshou,industry_j,sex_woman,social_security_card,golden_card,user_cert_level_high,ck_year_others,industry_o,xz_tianping,zc_others,terminal_pc,zc_1_3,xz_chunv,xz_juxie,ordinary_card,whitegold_card,xz_shizi,zc_3_5,hy_20,hy_21,xz_baiyang,hy_40,hy_22,xz_shuangyu,org_zone_10,org_zone_11,sex_man,org_zone_12,org_zone_13,zc_1,ass_grade_1,security_uk_type,ass_grade_2,org_zone_15,ass_grade_3,org_zone_16,org_zone_17,org_zone_18,citizen_card,job_1,org_zone_19,edu_college_above,generation_50b,job_2,job_3,ck_year_1_3,job_4,searchengine_baidu,use_time_01,college_others,job_5,ck_year_5_10,risk_level_3,xz_jinniu,use_time_02,use_time_03,use_time_04,ck_year_3_5,use_time_05,xz_shuiping from hb_label_user_result</sql>
 	</sqlGroup>
 	
 	<sqlGroup name="label_label_grouping">
@@ -80,6 +80,7 @@
 	<sqlGroup name="label_colony_users">
 		<sql id="name">具有标签用户</sql>
 		<sql id="header"></sql>
+		<!--<sql id="sql">select count(rowkey,ecif_cust_no,mobile,branch_id,inn_org_nm,inn_org_sht_nm,inn_org_zone_cd,inn_org_zone_desc,inn_org_lvl_cd,org_lvl_nm,cert_no,name,acct_no,sex,marriage,age,birthday,generation,constellation,job,industry,ck_year,zc_year,ass_grade,assets,debt,user_id,daily_date,date_year,date_week,generation_80s,generation_90s,org_zone_20,org_zone_21,org_zone_03,colony_1,org_zone_04,industry_a,org_zone_05,user_cert_level_low,generation_others,colony_3,org_zone_06,org_zone_07,colony_5,org_zone_08,org_zone_09,xz_sheshou,industry_j,sex_woman,social_security_card,golden_card,user_cert_level_high,ck_year_others,industry_o,xz_tianping,zc_others,terminal_pc,zc_1_3,xz_chunv,xz_juxie,ordinary_card,whitegold_card,xz_shizi,zc_3_5,hy_20,hy_21,xz_baiyang,hy_40,hy_22,xz_shuangyu,org_zone_10,org_zone_11,sex_man,org_zone_12,org_zone_13,zc_1,ass_grade_1,security_uk_type,ass_grade_2,org_zone_15,ass_grade_3,org_zone_16,org_zone_17,org_zone_18,citizen_card,job_1,org_zone_19,edu_college_above,generation_50b,job_2,job_3,ck_year_1_3,job_4,searchengine_baidu,use_time_01,college_others,job_5,ck_year_5_10,risk_level_3,xz_jinniu,use_time_02,use_time_03,use_time_04,ck_year_3_5,use_time_05,xz_shuiping) as allusers from hb_label_user_result</sql>-->
 		<sql id="sql">select count(*) as allusers from hb_label_user_result</sql>
 	</sqlGroup>
 	
