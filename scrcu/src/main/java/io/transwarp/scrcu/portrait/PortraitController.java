@@ -324,7 +324,7 @@ public class PortraitController extends Controller {
 	}
 
 	@RequiresPermissions("/portrait/groupTagList")
-	public void grouptags() {
+	public void groupTags() {
 		if (BaseUtils.isAjax(getRequest())) {
 			StringBuffer condition = new StringBuffer(getPara("condition"));
 			String code = getPara("code");
