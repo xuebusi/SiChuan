@@ -41,8 +41,8 @@
 <script>
 	function query(flag) {
 		var ajaxOption = {
-			//url : window.location.href + "?start_dt=" + getDateStr(0),
-			url : window.location.href + "?start_dt=2015-12-01",
+			url : window.location.href + "?start_dt=" + getDateStr(0),
+//			url : window.location.href + "?start_dt=2015-12-01",
 			success : function(data) {
 				tableQuery({
 					"aaData" : data.data
@@ -55,29 +55,6 @@
 		query(true);
 	});
 
-    var tenmin = 1000; 
-    var date = []; 
-    var now = new Date();  
-    function addData(shift) { 
-        var h = now.getHours(); 
-        var min = now.getMinutes(); 
-        var s = now.getSeconds(); 
-        if(h < 10) 
-            h = "0" + h; 
-        if(min < 10) 
-            min = "0" + min; 
-        if(s < 10) 
-            s = "0" + s; 
-        show = [h , min, s].join(':'); 
-        date.push(show); 
-        if (shift)
-            date.shift(); 
-        now = new Date(+new Date(now) + tenmin); 
-    }  
-    for (var i = 1; i < 60; i++) { 
-        addData(); 
-    }
-
     realtimeoption = {
 		tooltip : {
 			trigger : 'axis'
@@ -87,14 +64,23 @@
 		},
 		grid : {
 			x : 45,
-			x2 : 20,
+			x2 : 30,
 			y : 18,
 			y2 : 45
 		},
 		xAxis : [ {
 			type : 'category',
 			boundaryGap : false,
-			data : date
+			data : (function (){
+                var now = new Date();
+                var res = [];
+                var len = 100;
+                while (len--) {
+                    res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                    now = new Date(now - 10000);
+                }
+                return res;
+            })()
 		} ],
 		yAxis : [ {
 			type : 'value',
@@ -121,20 +107,32 @@
 				.getElementById('realtimechart'), 'infographic');
 		// 为echarts对象加载数据
 		realtimeChart.setOption(realtimeoption);
-		timeTicket = setInterval(function() {
-		    //动态刷新x轴的数据
-            addData(true); 
-            realtimeChart.setOption({ 
-                xAxis: [ { 
-                    data : date 
+
+		setInterval(function () {
+            realtimeChart.setOption({
+                xAxis: [ {
+                    data : (function (){
+                        var now = new Date();
+                        var res = [];
+                        var len = 100;
+                        while (len--) {
+                            res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                            now = new Date(now - 10000);
+                        }
+                        return res;
+                    })()
                 } ]
-			});
+            });
+        },1000);
+
+		timeTicket = setInterval(function() {
+
 			// 动态数据接口 addData
 			realtimeChart.addData([ [ 0, // 系列索引
 			Math.round(Math.random() * 100 + 400), // 新增数据
-			true, // 新增数据是否从队列头部插入
+			false, // 新增数据是否从队列头部插入
 			false // 是否增加队列长度，false则自定删除原有数据，队头插入删队尾，队尾插入删队头
 			] ]);
-		}, 1000);
+		}, 10000);
 	}
 </script>

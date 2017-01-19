@@ -24,7 +24,7 @@
 	<section class="vbox">
 		<section class="scrollable">
 			<div style="margin-top: 10px;" class="padder clear">
-				<form action="${root}/portrait/groupTags" class="form-horizontal" method="post">
+				<form action="/portrait/groupTags" class="form-horizontal" method="post">
 					<div class="form-group col-sm-12">
 						<section class="panel panel-default">
 							<header class="panel-heading" style="height: 55px; padding: 10px 0px 2px">
@@ -66,7 +66,7 @@
 								</div>
 							</div>
 						</section>
-						<!--                         <div id="tags" class="pagination userTags" style="height:100px"></div> -->
+						<!-- <div id="tags" class="pagination userTags" style="height:100px"></div> -->
 						<input type="hidden" name="code" id="code">
 					</div>
 
@@ -119,7 +119,7 @@
 			});
 			
 			}
-		}
+		};
 		commonAjax(ajaxOption);
 	});
 	function search(){
