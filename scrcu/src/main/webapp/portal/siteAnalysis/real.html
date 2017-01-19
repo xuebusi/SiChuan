@@ -76,7 +76,8 @@
                 var res = [];
                 var len = 100;
                 while (len--) {
-                    res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                    //将时间设置为24小时制
+                    res.unshift(now.toLocaleTimeString('chinese',{hour12:false}));
                     now = new Date(now - 10000);
                 }
                 return res;
@@ -116,7 +117,7 @@
                         var res = [];
                         var len = 100;
                         while (len--) {
-                            res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
+                            res.unshift(now.toLocaleTimeString('chinese',{hour12:false}));
                             now = new Date(now - 10000);
                         }
                         return res;

@@ -51,6 +51,12 @@ import test.io.transwarp.echarts.util.EnhancedOption;
 
 public class ChartUtils {
 
+    /**
+     * 获取饼状图数据
+     * @param name
+     * @param dataList
+     * @return
+     */
     public static String genPie(String name, List<Object> dataList) {
         EnhancedOption option = new EnhancedOption();
         //设置标题的显示位置
@@ -68,6 +74,12 @@ public class ChartUtils {
 
     }
 
+    /**
+     * 用户交易金额分布图形数据
+     * @param name
+     * @param map
+     * @return
+     */
     public static String genPortraitPie(String name, java.util.Map<String, Integer> map) {
         List<Object> list = new ArrayList<>();
         for (String key : map.keySet()) {
