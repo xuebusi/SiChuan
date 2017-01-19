@@ -66,10 +66,8 @@
 								</div>
 							</div>
 						</section>
-						<!--<div id="tags" class="pagination userTags" style="height:100px"></div> -->
 						<input type="hidden" name="code" id="code">
 					</div>
-
 					<input type="submit" onclick="search()" class="clear btn btn-s-md btn-default" value="检索" />
 				</form>
 			</div>
@@ -91,7 +89,6 @@
 		</section>
 	</section>
 </section>
-
 </@layout>
 <script>
 	var tagMap;
@@ -119,7 +116,7 @@
 			});
 			
 			}
-		}
+		};
 		commonAjax(ajaxOption);
 	});
 	function search(){
